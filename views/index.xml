@@ -1,0 +1,6 @@
+<Alloy>
+	<Window>
+		<ImageView id="imageView" onClick="clickImage"/>
+		<Label id="l">Click Image of Apple Logo</Label>
+	</Window>
+</Alloy>

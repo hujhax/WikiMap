@@ -1,0 +1,15 @@
+"Window": {
+	backgroundColor:"white"
+},
+"#l":{
+	bottom:20,
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color:'#999'
+},
+"#imageView":{
+	image:"/images/apple_logo.jpg",
+	width:24,
+	height:24,
+	top:100
+}
