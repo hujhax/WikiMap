@@ -4,12 +4,7 @@
 	<title>WikiMap</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
-	<style type="text/css">
-		/* Prevent copy paste for all elements except text fields */
-		*  { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
-		input, textarea  { -webkit-user-select:text; }
-		body { background-color:white; color:black }
-	</style>
+
 	<script src='intelxdk.js'></script>
 	<script type="text/javascript">
 		/* This code is used to run as soon as Intel activates */
@@ -20,7 +15,20 @@
 		document.addEventListener("intel.xdk.device.ready",onDeviceReady,false);
 	</script>
 
-  <style>
+  <style type="text/css">
+    /* Prevent copy paste for all elements except text fields */
+    *  {
+      -webkit-user-select:none;
+      -webkit-tap-highlight-color:rgba(255, 255, 255, 0);
+    }
+    input, textarea {
+      -webkit-user-select:text;
+    }
+    body {
+      background-color:white;
+      color:black
+      margin: 0px;
+    }
     .link {
       stroke: #444;
     }
