@@ -49,10 +49,6 @@
         .attr("height", height);
 
     d3.json("./js/testTopicData.json", function(error, graph) {
-      console.log(force);
-      console.log(graph);
-      console.log(error);
-
       force
           .nodes(graph.nodes)
           .links(graph.links)
