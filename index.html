@@ -30,8 +30,6 @@
 <body>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
-  <p>Hello World!</p>
-
   <script>
     var width = 200,
         height = 200;
@@ -41,8 +39,6 @@
         .linkDistance(30)
         .size([width, height]);
 
-    console.log(width);
-    console.log(force);
 
     var svg = d3.select("body").append("svg")
         .attr("width", width)
