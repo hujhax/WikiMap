@@ -43,8 +43,8 @@
         height = 1136;
 
     var force = d3.layout.force()
-        .charge(-120)
-        .linkDistance(50)
+        .charge(-1420)
+        .linkDistance(150)
         .size([width, height]);
 
 
@@ -68,7 +68,7 @@
           .data(graph.nodes)
         .enter().append("circle")
           .attr("class", "node")
-          .attr("r", 15)
+          .attr("r", 50)
           .style("stroke", "#444")
           .style("fill", "white")
           .style("stroke-width", 3)
