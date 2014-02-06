@@ -32,6 +32,10 @@
     .link {
       stroke: #444;
     }
+    .node text {
+      pointer-events: none;
+      font: 10px sans-serif;
+    }
   </style>
 </head>
 
@@ -66,16 +70,24 @@
 
       var node = svg.selectAll(".node")
           .data(graph.nodes)
-        .enter().append("circle")
+        .enter().append("g")
           .attr("class", "node")
+          .call(force.drag);
+
+
+      node.append("circle")
           .attr("r", 50)
           .style("stroke", "#444")
           .style("fill", "white")
           .style("stroke-width", 3)
-          .call(force.drag);
 
       node.append("title")
           .text(function(d) { return d.name; });
+
+      node.append("text")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .text(function(d) { return d.name });
 
       force.on("tick", function() {
         link.attr("x1", function(d) { return d.source.x; })
@@ -83,8 +95,8 @@
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
 
-        node.attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+        
+        node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       });
     });
   </script>
