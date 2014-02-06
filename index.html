@@ -78,8 +78,9 @@
           .call(force.drag);
 
 
-      node.append("circle")
-          .attr("r", 50)
+      node.append("ellipse")
+          .attr("rx", 50)
+          .attr("ry", 30)
           .style("stroke", "#444")
           .style("fill", "white")
           .style("stroke-width", 3)
