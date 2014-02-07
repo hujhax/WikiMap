@@ -46,6 +46,8 @@
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
   <script>
+    var didDrag = false;
+
     var width = window.screen.width,
         height = window.screen.height;
 
@@ -53,7 +55,6 @@
         .charge(-1420)
         .linkDistance(150)
         .size([width, height]);
-
 
     var svg = d3.select("body").append("svg")
         .attr("width", width)
@@ -84,7 +85,10 @@
           .style("stroke", "#444")
           .style("fill", "white")
           .style("stroke-width", 3)
-          .on("click", clickNode)
+          // (we want to repsond to clicks but not drags.)
+          .on("mousedown", function() {didDrag = false;})
+          .on("mousemove", function() {didDrag = true;})
+          .on("mouseup", function(d) {if (!didDrag) clickNode(d)}); // todo: fire if there was just a tiny drag
 
       node.append("title")
           .text(function(d) { return d.name; });
