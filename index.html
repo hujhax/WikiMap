@@ -84,6 +84,7 @@
           .style("stroke", "#444")
           .style("fill", "white")
           .style("stroke-width", 3)
+          .on("click", clickNode)
 
       node.append("title")
           .text(function(d) { return d.name; });
@@ -98,11 +99,14 @@
             .attr("y1", function(d) { return d.source.y; })
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
-
         
         node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       });
     });
+
+    function clickNode(d) {
+      alert("You clicked " + d.name);
+    }
   </script>
 </body>
 </html>
