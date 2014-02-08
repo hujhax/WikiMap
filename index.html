@@ -33,11 +33,20 @@
     }
     .link {
       stroke: #444;
+      stroke-width: 3;
+    }
+    .node {
+      stroke: #444;
+      stroke-width: 3;
+      fill: white;
     }
     .node text {
       pointer-events: none;
       font-family: 'Open Sans', sans-serif;
       font-size: 18px;
+      stroke-width: 1;
+      fill: black;
+      stroke: black;
     }
   </style>
 </head>
@@ -69,8 +78,7 @@
       var link = svg.selectAll(".link")
           .data(graph.links)
         .enter().append("line")
-          .attr("class", "link")
-          .style("stroke-width", 3);
+          .attr("class", "link");
 
       var node = svg.selectAll(".node")
           .data(graph.nodes)
@@ -78,13 +86,9 @@
           .attr("class", "node")
           .call(force.drag);
 
-
       node.append("ellipse")
           .attr("rx", 50)
           .attr("ry", 30)
-          .style("stroke", "#444")
-          .style("fill", "white")
-          .style("stroke-width", 3)
           // (we want to repsond to clicks but not drags.)
           .on("mousedown", function() {didDrag = false;})
           .on("mousemove", function() {didDrag = true;})
