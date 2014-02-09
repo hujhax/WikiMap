@@ -71,15 +71,12 @@
         .attr("width", width)
         .attr("height", height);
 
-    var nodes, links;
+    var nodes = [ {"name": "Cat", "clickable": true, "activated": false} ];
+    var links = [];
     var node = svg.selectAll(".node");
     var link = svg.selectAll(".link");
 
-    d3.json("./js/testTopicData.json", function(error, graph) {
-      nodes = graph.nodes;
-      links = graph.links;
-      update();
-    });
+    update();
 
     function update() {
       force
