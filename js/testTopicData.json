@@ -1,6 +1,6 @@
 {
 	"nodes": [
-		{"name": "Cat"}
+		{"name": "Cat", "clickable": true, "activated": false}
 	],
 	"links": [
 	]

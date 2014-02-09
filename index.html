@@ -128,11 +128,13 @@
     }
 
     function clickNode(d) {
+      if (! d.clickable) return;
+      if (d.activated) return;
       nodes.push({name: "Dog"});
       links.push({"source": 1, "target": 0, "value": 1});
 
       update();
-
+      d.activated = true;
     }
   </script>
 </body>
