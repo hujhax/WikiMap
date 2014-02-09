@@ -132,11 +132,30 @@
     function clickNode(d) {
       if (! d.clickable) return;
       if (d.activated) return;
-      nodes.push({name: "Dog"});
-      links.push({"source": 1, "target": 0, "value": 1});
+
+      var children = [];
+      switch (d.name) {
+        case "Cat":
+          children = ["Feline", "Purring", "Mammal", "Feral Cats", "Tiger"];
+          break;
+        case "Tiger":
+          children = ["Feline", "Bengal Tiger", "Liger", "Sumatra"];
+          break;
+        default:
+          break;
+      }
+
+      console.log(children);
+      _.each(children, _.partial(addChild,d.index));
 
       update();
       d.activated = true;
+    }
+
+    function addChild(parentIndex, childName) {
+      console.log("addChild called with parameters " + parentIndex + " and " + childName);
+      nodes.push({name: childName, clickable: (childName == "Tiger")});
+      links.push({"source": nodes.length-1, "target": parentIndex});
     }
   </script>
 </body>
