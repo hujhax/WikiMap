@@ -69,22 +69,37 @@
         .attr("width", width)
         .attr("height", height);
 
+    var nodes, links;
+    var node = svg.selectAll(".node");
+    var link = svg.selectAll(".link");
+
     d3.json("./js/testTopicData.json", function(error, graph) {
+      nodes = graph.nodes;
+      links = graph.links;
+      update();
+    });
+
+    function update() {
       force
-          .nodes(graph.nodes)
-          .links(graph.links)
+          .nodes(nodes)
+          .links(links)
           .start();
 
-      var link = svg.selectAll(".link")
-          .data(graph.links)
-        .enter().append("line")
+      link = link.data(links);
+      link
+          .enter()
+          .insert("line", ".node")  // we want the lines to go *behind* the nodes
           .attr("class", "link");
 
-      var node = svg.selectAll(".node")
-          .data(graph.nodes)
-        .enter().append("g")
+      node = node.data(nodes);
+
+      node
+          .enter()
+          .append("g")
           .attr("class", "node")
           .call(force.drag);
+      
+      force.start();
 
       node.append("ellipse")
           .attr("rx", 50)
@@ -110,10 +125,14 @@
         
         node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       });
-    });
+    }
 
     function clickNode(d) {
-      alert("You clicked " + d.name);
+      nodes.push({name: "Dog"});
+      links.push({"source": 1, "target": 0, "value": 1});
+
+      update();
+
     }
   </script>
 </body>
