@@ -153,9 +153,12 @@
     }
 
     function addChild(parentIndex, childName) {
-      console.log("addChild called with parameters " + parentIndex + " and " + childName);
-      nodes.push({name: childName, clickable: (childName == "Tiger")});
-      links.push({"source": nodes.length-1, "target": parentIndex});
+      var childIndex = _.chain(nodes).pluck("name").indexOf(childName).value();
+
+      if (childIndex == -1) // not found!
+        childIndex = nodes.push({name: childName, clickable: (childName == "Tiger")}) - 1;
+
+      links.push({"source": childIndex, "target": parentIndex});
     }
   </script>
 </body>
