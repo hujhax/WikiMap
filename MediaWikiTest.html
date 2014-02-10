@@ -4,6 +4,7 @@
 	<title>WikiMap - MediaWiki Testing Doc</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="./js/underscore-min.js"></script>
 
 	<script>
 		function wikipediaCallAPI(preString, postString, callback) {
@@ -23,12 +24,21 @@
 		function wikipediaSearchShow(data) {
 			document.getElementById("testMessage").innerHTML = data[1].join("<br>");
 		}
+
+		function wikipediaLinks() {
+			return wikipediaCallAPI("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&prop=links", wikipediaLinksShow);
+		}
+
+		function wikipediaLinksShow(data) {
+			document.getElementById("testMessage").innerHTML = _.pluck(_.flatten(data.query.pages)[0].links, "title").join("<br>");
+		}
 	</script>
 </head>
 
 <body>
 	<input id="testData" value="Kitten"/>
 	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
+	<button onclick="wikipediaLinks()">Get Links</Button>
 	<div id="testMessage"></div>
 </body>
 </html>
