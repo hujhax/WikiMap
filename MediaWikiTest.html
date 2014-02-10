@@ -32,6 +32,14 @@
 		function wikipediaLinksShow(data) {
 			document.getElementById("testMessage").innerHTML = _.pluck(_.flatten(data.query.pages)[0].links, "title").join("<br>");
 		}
+
+		function wikipediaPage() {
+			return wikipediaCallAPI("http://en.wikipedia.org/w/api.php?action=parse&format=json&page=", "&redirects&prop=text", wikipediaPageShow);
+		}
+
+		function wikipediaPageShow(data) {
+			document.getElementById("testMessage").innerHTML = data.parse.text["*"];
+		}
 	</script>
 </head>
 
@@ -39,6 +47,7 @@
 	<input id="testData" value="Kitten"/>
 	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
 	<button onclick="wikipediaLinks()">Get Links</Button>
+	<button onclick="wikipediaPage()">Get Page</Button>
 	<div id="testMessage"></div>
 </body>
 </html>
