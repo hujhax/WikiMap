@@ -6,16 +6,18 @@
 	<script src="./js/underscore-min.js"></script>
 
 	<script>
-		function helloWorld() {
-			document.getElementById("testMessage").innerHTML="Hello " +
-				document.getElementById("testData").value + "!";
+		function wikipediaSearch() {
+			var searchString = document.getElementById("testData").value;
+			var URL = "http://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchString + "&limit=10&namespace=0&format=json";
+
+			window.open(URL,"_self")
 		}
 	</script>
 </head>
 
 <body>
 	<input id="testData"/>
-	<button onclick="helloWorld()">Click</Button>
+	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
 	<div id="testMessage"></div>
 </body>
 </html>
