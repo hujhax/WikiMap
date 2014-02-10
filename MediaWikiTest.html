@@ -4,9 +4,18 @@
 	<title>WikiMap - MediaWiki Testing Doc</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script src="./js/underscore-min.js"></script>
+
+	<script>
+		function helloWorld() {
+			document.getElementById("testMessage").innerHTML="Hello " +
+				document.getElementById("testData").value + "!";
+		}
+	</script>
 </head>
 
 <body>
-	<p>Nothing to see here just yet!</p>
+	<input id="testData"/>
+	<button onclick="helloWorld()">Click</Button>
+	<div id="testMessage"></div>
 </body>
 </html>
