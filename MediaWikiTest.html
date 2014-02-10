@@ -3,14 +3,16 @@
 <head>
 	<title>WikiMap - MediaWiki Testing Doc</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<script src="./js/underscore-min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 	<script>
 		function wikipediaSearch() {
 			var searchString = document.getElementById("testData").value;
 			var URL = "http://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchString + "&limit=10&namespace=0&format=json";
 
-			window.open(URL,"_self")
+			$.getJSON(URL, function (data) {
+				document.getElementById("testMessage").innerHTML = data[1].join("<br>");
+			});
 		}
 	</script>
 </head>
