@@ -42,11 +42,25 @@
 		}
 
 		function wikipediaLinks() {
-			return wikipediaCallAPI("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&prop=links", wikipediaLinksShow);
+			return wikipediaAccumulator("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&prop=links", wikipediaLinksShow);
 		}
 
-		function wikipediaLinksShow(data) {
-			document.getElementById("testMessage").innerHTML = _.pluck(_.flatten(data.query.pages)[0].links, "title").join("<br>");
+		function wikipediaLinksShow(results) {
+			var titleArray = _.chain(results)
+								.pluck("query")
+								.pluck("pages")
+								.map(function(array) {
+									return _.chain(array)
+												.flatten()
+												.first()
+												.value();
+											})
+								.pluck("links")
+								.flatten()
+								.pluck("title")
+								.value();
+
+			document.getElementById("testMessage").innerHTML = titleArray.join("<br>");
 		}
 
 		function wikipediaPage() {
