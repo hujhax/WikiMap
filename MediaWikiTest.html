@@ -25,7 +25,6 @@
 		}
 
 		function wikipediaAccumulatorCore(URL, callback, results, data) {
-			debugger;
 			results.push(data);
 			if (data.continue)
 				$.getJSON(URL + $.param(data.continue), _.partial(wikipediaAccumulatorCore, URL, callback, results));
