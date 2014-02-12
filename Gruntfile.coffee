@@ -42,7 +42,7 @@ module.exports = (grunt) ->
             dist:
                 options:
                     config: 'config.rb'
-                    sourcemap: true
+                    sourceMap: true
                     noLineComments: true
         coffee:
             options:
