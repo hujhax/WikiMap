@@ -1,10 +1,2 @@
-body {
-  background: green;
-}
-
-h1 {
-  font-weight: bold;
-  color: blue;
-}
-
+*{-webkit-user-select:none;-webkit-tap-highlight-color:rgba(255,255,255,0)}input,textarea{-webkit-user-select:text}body{background-color:white;color:black;margin:0}.link{stroke:#444;stroke-width:3}.node{stroke:#444;stroke-width:3;fill:white}.node text{pointer-events:none;font-family:'Open Sans', sans-serif;font-size:18px;stroke-width:1;fill:black;stroke:black}
 /*# sourceMappingURL=style.css.map */
