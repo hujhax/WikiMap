@@ -4,7 +4,7 @@ module.exports = (grunt) ->
             options:
                 mangle: true #shorten variable names
                 compressed: true #remove whitespace
-                sourceMap: "minified/application.map" # add a sourcemap
+                sourcemap: "minified/application.map" # add a sourcemap
                 banner: "/* WikiMap 2014/*\n" # add a message at the top of file
             someTarget:
                 # this is an example of a single target task, ie targets 1 file
@@ -42,14 +42,14 @@ module.exports = (grunt) ->
             dist:
                 options:
                     config: 'config.rb'
-                    sourceMap: true
+                    sourcemap: false
                     noLineComments: true
         coffee:
             options:
                 bare: false # wrapper function?
                 join: false 
                 separator: ";"
-                sourceMap: true
+                sourcemap: false
             coffeeTarget:
                 # since we want to compile all files in a directory, we don't know what all thier names are so we won't know what the destination file name will be, so we use this format to dynamically name them
                 expand: true #expand the file path
