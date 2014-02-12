@@ -4,12 +4,12 @@ module.exports = (grunt) ->
             options:
                 mangle: true #shorten variable names
                 compressed: true #remove whitespace
-                sourceMap: "distribution/application.map" # add a sourcemap
+                sourceMap: "minified/application.map" # add a sourcemap
                 banner: "/* WikiMap 2014/*\n" # add a message at the top of file
             someTarget:
                 # this is an example of a single target task, ie targets 1 file
-                src: "destination/application.js" # the file that concat takes
-                dest: "distribution/application.min.js"
+                src: "concated/application.js" # the file that concat takes
+                dest: "minified/application.min.js"
         jshint:
             options:
                 jshintrc: ".jshintrc" # options are in a seperate .jshintrc file (can get to be a pretty long list) or can just put them in here like these commented out below
@@ -24,8 +24,10 @@ module.exports = (grunt) ->
                 separator: ";"
             concatTarget: 
                 src: ["src/application.js", "src/util.js"] # takes these two files and concats them into 1 file. places this file in dest
-                dest: "destination/application.js"
+                dest: "concated/application.js"
         watch:
+            options:
+                livereload: true
             scripts:
                 files: ["src/*.js"]
                 tasks: ["jshint"]
@@ -56,12 +58,12 @@ module.exports = (grunt) ->
                 expand: true #expand the file path
                 cwd: 'coffee/' #Current Working Directory(source of files to compile)
                 src: '*.coffee' # actual files we are targeting
-                dest: "lib/" # destination for compiled .js files
+                dest: "caffinatedjs/" # destination for compiled .js files
                 ext: ".js" # the extension to add to every compiled file
         nodeunit: # unit testing, since all it's doing is running our tests, there really aren't any options that need to be passed so we just have the target, but, there's no destination file either so no need to make an object so just set it directly
             nodeunitTarget: 'test/*_test.js' # run on all files with the format name_test.js
         clean:
-            cleanTarget: ['distribution', 'lib'] # these are files that we might want to delete everytime
+            cleanTarget: ['minified', 'caffinatedjs'] # these are files that we might want to delete everytime
 
 
     grunt.loadNpmTasks 'grunt-contrib-uglify'

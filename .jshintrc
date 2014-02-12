@@ -1,5 +1,4 @@
 {
     "eqeqeq" : true,
-    "curly"  : true,
-    "undef"  : true
+    "curly"  : true
 }

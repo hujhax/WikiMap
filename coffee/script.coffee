@@ -1,2 +1,2 @@
 sayHi (name) -> "Hi" + name "!!"
-saYo (name) -> "YO" + name "!"
+saYo (name) -> "Yo, yo" + name "!"
