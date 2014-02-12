@@ -19,7 +19,7 @@
 
 		function wikipediaAccumulator(preString, postString, callback) {
 			var searchString = document.getElementById("testData").value;
-			var URL = preString + searchString + postString + "&";
+			var URL = preString + searchString + postString + "&callback=?&";
 
 			$.getJSON(URL + "continue=", _.partial(wikipediaAccumulatorCore, URL, callback, []));
 		}
