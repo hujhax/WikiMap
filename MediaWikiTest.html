@@ -41,7 +41,7 @@
 		}
 
 		function wikipediaLinks() {
-			return wikipediaAccumulator("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&prop=links", wikipediaLinksShow);
+			return wikipediaAccumulator("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", wikipediaLinksShow);
 		}
 
 		function wikipediaLinksShow(results) {
