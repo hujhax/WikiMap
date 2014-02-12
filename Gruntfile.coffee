@@ -12,10 +12,10 @@ module.exports = (grunt) ->
                 dest: "minified/application.min.js"
         jshint:
             options:
-                jshintrc: ".jshintrc" # options are in a seperate .jshintrc file (can get to be a pretty long list) or can just put them in here like these commented out below
-                # eqeqeq: true # set to always use triple equals
-                # curly: true # set to always use curlys, even for 1 line "if" statements
-                # undef: true # always use the var keyword for variable
+                # jshintrc: ".jshintrc" # options are in a seperate .jshintrc file (can get to be a pretty long list) or can just put them in here like these commented out below
+                eqeqeq: true # set to always use triple equals
+                curly: true # set to always use curlys, even for 1 line "if" statements
+                undef: true # always use the var keyword for variable
                 # unused: true # if a variable is not used
             jshintTarget: 
                 src: "src/*.js" # since jshint only evaluates the files and throws errors, no need for a destination file
