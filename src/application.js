@@ -1,3 +1,3 @@
 var module = function function_name (argument) {
-    console.log('testing');
+    console.log('test');
 };

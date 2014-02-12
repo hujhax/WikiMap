@@ -10,15 +10,6 @@ module.exports = (grunt) ->
                 # this is an example of a single target task, ie targets 1 file
                 src: "concated/application.js" # the file that concat takes
                 dest: "minified/application.min.js"
-        jshint:
-            options:
-                # jshintrc: ".jshintrc" # options are in a seperate .jshintrc file (can get to be a pretty long list) or can just put them in here like these commented out below
-                eqeqeq: true # set to always use triple equals
-                curly: true # set to always use curlys, even for 1 line "if" statements
-                undef: true # always use the var keyword for variable
-                # unused: true # if a variable is not used
-            jshintTarget: 
-                src: "src/*.js" # since jshint only evaluates the files and throws errors, no need for a destination file
         concat:
             options:
                 separator: ";"
@@ -30,7 +21,7 @@ module.exports = (grunt) ->
                 livereload: true
             scripts:
                 files: ["src/*.js"]
-                tasks: ["jshint"]
+                tasks: ["concat"]
             coffee:
                 files: ["coffee/*.coffee"] # watched files
                 tasks: ["coffee"] # task to run on them
@@ -73,7 +64,6 @@ module.exports = (grunt) ->
 
 
     grunt.loadNpmTasks 'grunt-contrib-uglify'
-    grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-concat'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -84,6 +74,6 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-autoprefixer'
 
     # when called "default", will only run "grunt" on the command line. so what we do is chain a bunch of tasks together in an array. If one fails, the process stops
-    grunt.registerTask "default", ['jshint', 'concat', 'uglify', 'compass', 'autoprefixer', 'haml']
+    grunt.registerTask "default", ['concat', 'uglify', 'compass', 'autoprefixer', 'haml']
     # "reboot" is arbitrary name, we run clean first, then run default (above).
     grunt.registerTask "reboot", ['clean', 'default']
