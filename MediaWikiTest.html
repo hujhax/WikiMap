@@ -40,11 +40,11 @@
 			document.getElementById("testMessage").innerHTML = data[1].join("<br>");
 		}
 
-		function wikipediaLinks() {
-			return wikipediaAccumulator("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", wikipediaLinksShow);
+		function wikipediaLinks(getRandomLinks) {
+			return wikipediaAccumulator("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
 		}
 
-		function wikipediaLinksShow(results) {
+		function wikipediaLinksShow(getRandomLinks, results) {
 			var titleArray = _.chain(results)
 								.pluck("query")
 								.pluck("pages")
@@ -58,6 +58,10 @@
 								.flatten()
 								.pluck("title")
 								.value();
+
+			if (getRandomLinks) {
+				titleArray = _.chain(titleArray).shuffle().first(document.getElementById("testNumber").value).value();
+			}
 
 			document.getElementById("testMessage").innerHTML = titleArray.join("<br>");
 		}
@@ -75,8 +79,10 @@
 <body>
 	<input id="testData" value="Kitten"/>
 	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
-	<button onclick="wikipediaLinks()">Get Links</Button>
+	<button onclick="wikipediaLinks(false)">Get Links</Button>
 	<button onclick="wikipediaPage()">Get Page</Button>
+	<br>
+	<button onclick="wikipediaLinks(true)">Get This Many Random Links</Button>: <input id="testNumber" value="5">
 	<div id="testMessage"></div>
 </body>
 </html>
