@@ -1,5 +1,7 @@
 module.exports = (grunt) ->
     grunt.initConfig
+        jshint:
+            all: ['./js/mindmap.js']
         uglify:
             options:
                 mangle: true #shorten variable names
@@ -67,6 +69,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-concat'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
+    grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-nodeunit'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-compass'
@@ -74,6 +77,6 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-autoprefixer'
 
     # when called "default", will only run "grunt" on the command line. so what we do is chain a bunch of tasks together in an array. If one fails, the process stops
-    grunt.registerTask "default", ['concat', 'uglify', 'compass', 'autoprefixer', 'haml']
+    grunt.registerTask "default", ['concat', 'uglify', 'compass', 'autoprefixer', 'haml', 'jshint']
     # "reboot" is arbitrary name, we run clean first, then run default (above).
     grunt.registerTask "reboot", ['clean', 'default']
