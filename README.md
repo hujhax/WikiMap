@@ -2,23 +2,23 @@
 
 An iOS app for viewing Wikipedia as a Mind Map.
 
-### Build Process
-- install [npm](https://npmjs.org/) if you haven't already
-- install PhoneGap globally by running
+## Using Grunt
 
-`npm install -g phonegap`
+Grunt is a JavaScript task-runner that makes development on the WikiMap app easier.
 
-- cd into the _/platforms_ subdirectory from the root folder of the project
-- build the app by running
+To get grunt up and running, you'll need to first have node.js installed.  (See http://nodejs.org/.) 
 
-`phonegap build ios`
+Then, navigate to the WikiMap root directory and type "npm install".  This will install all the appropriate plugins.
 
-- will probably throw an error saying that you need to install ios-sim 
+Finally, type "npm install -g grunt-cli" and you'll get the grunt command-line interface.
 
-`npm install -g ios-sim`
+When you're developing, start "grunt watch" going in a command window, and it will automatically compile Compass/SASS and HAML changes, lint the JS code, and perform a number of other automated tassk.
 
-- once that has succeeded, run (I _think_ from the root folder)
+If you'd like to automatically reload the app in your browser whenever its code changes, you'll want to install the "LiveReload" plugin for your browser, and serve the application off of a server on your machine.  (For Windows, I recommend mongoose.exe.)
 
-`phonegap install ios`
 
-- should then open in ios simulator
+## Build Process
+This project uses the Intel XDK.
+
+- install the Intel XDK from http://xdk-software.intel.com/
+- from there, you should be able to load the app on emulators and deploy it to devices.
