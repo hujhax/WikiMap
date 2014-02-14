@@ -8,13 +8,21 @@ Grunt is a JavaScript task-runner that makes development on the WikiMap app easi
 
 To get grunt up and running, you'll need to first have node.js installed.  (See http://nodejs.org/.) 
 
-Then, navigate to the WikiMap root directory and type "npm install".  This will install all the appropriate plugins.
+You'll also need to install [Ruby](https://www.ruby-lang.org/en/downloads/) if you haven't already.
 
-Finally, type "npm install -g grunt-cli" and you'll get the grunt command-line interface.
+Then, you'll need to install gems for HAML and for (prerelease) Compass, like so:
 
-When you're developing, start "grunt watch" going in a command window, and it will automatically compile Compass/SASS and HAML changes, lint the JS code, and perform a number of other automated tassk.
+`gem install haml`
 
-If you'd like to automatically reload the app in your browser whenever its code changes, you'll want to install the "LiveReload" plugin for your browser, and serve the application off of a server on your machine.  (For Windows, I recommend mongoose.exe.)
+`gem install compass --pre`
+
+Then, navigate to the WikiMap root directory and type `npm install`.  This will install all the appropriate plugins.
+
+Finally, type `npm install -g grunt-cli` and you'll get the grunt command-line interface.
+
+When you're developing, start `grunt watch` going in a command window, and it will automatically compile Compass/SASS and HAML changes, lint the JS code, and perform a number of other automated tassk.
+
+If you'd like to automatically reload the app in your browser whenever its code changes, you'll want to install the `LiveReload` plugin for your browser, and serve the application off of a server on your machine.  (For Windows, I recommend mongoose.exe.)
 
 
 ## Build Process
