@@ -49,7 +49,7 @@ function update() {
       // (we want to repsond to clicks but not drags.)
       .on("mousedown", function() {didDrag = false;})
       .on("mousemove", function() {didDrag = true;})
-      .on("mouseup", function(d) {if (!didDrag) clickNode(d)}); // todo: fire if there was just a tiny drag
+      .on("mouseup", function(d) {if (!didDrag) clickNode(d);}); // todo: fire if there was just a tiny drag
 
   node.append("title")
       .text(function(d) { return d.name; });
@@ -57,7 +57,7 @@ function update() {
   node.append("text")
     .attr("dx", -45)
     .attr("dy", ".35em")
-    .text(function(d) { return d.name });
+    .text(function(d) { return d.name; });
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
