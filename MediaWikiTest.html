@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="./js/underscore-min.js"></script>
+    <script src="./js/WikiSearch.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
 	<script>
@@ -80,18 +81,22 @@
 </head>
 
 <body ng-app>
-	<input id="testData" value="Kitten"/>
-	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
-	<button onclick="wikipediaLinks(false)">Get Links</Button>
-	<button onclick="wikipediaPage()">Get Page</Button>
-	<br>
-	<button onclick="wikipediaLinks(true)">Get This Many Random Links</Button>: <input id="testNumber" value="5">
-	<p>Use wiki:</p>
-	<select id="wikiName">
-	  <option value="http://en.wikipedia.org/w">English wikipedia</option>
-	  <option value="http://fr.wikipedia.org/w">French wikipedia</option>
-	</select>
-	<div id="testMessage"></div>
-
-</body>
+    <div ng-controller="WikiController">
+    	<input ng-model="searchText" ng-change="textChange()" id="ng-test-text"/>
+     	<hr>
+		<input id="testData" value="Kitten"/>
+		<button onclick="wikipediaSearch()">Search Wikipedia</Button>
+		<button onclick="wikipediaLinks(false)">Get Links</Button>
+		<button onclick="wikipediaPage()">Get Page</Button>
+		<br>
+		<button onclick="wikipediaLinks(true)">Get This Many Random Links</Button>: <input id="testNumber" value="5">
+		<p>Use wiki:
+		<select id="wikiName">
+		  <option value="http://en.wikipedia.org/w">English wikipedia</option>
+		  <option value="http://fr.wikipedia.org/w">French wikipedia</option>
+		</select>
+		</p>
+		<div id="testMessage"></div>
+    </div>
+  </body>
 </html>
