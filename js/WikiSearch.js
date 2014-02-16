@@ -1,6 +1,7 @@
 function WikiController($scope) {
-	$scope.searchText = "Angular Text";
+	$scope.searchText = "Kitten";
+	$scope.items = [];
 	$scope.textChange = function() {
-		alert($scope.searchText);
+		$scope.items=[$scope.searchText+' 1',$scope.searchText+' 2',$scope.searchText+' 3']
 	};
 }

@@ -83,6 +83,13 @@
 <body ng-app>
     <div ng-controller="WikiController">
     	<input ng-model="searchText" ng-change="textChange()" id="ng-test-text"/>
+
+    	<ul>
+			<li ng-repeat="i in items">
+				<p>{{i}}</p>
+			</li>
+		</ul>
+
      	<hr>
 		<input id="testData" value="Kitten"/>
 		<button onclick="wikipediaSearch()">Search Wikipedia</Button>
