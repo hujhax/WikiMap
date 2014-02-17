@@ -49,6 +49,10 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.wikipediaPage = function() {
 		wikipediaCallAPI($http, $scope, "action=parse&format=json&page=", "&redirects&prop=text", wikipediaPageShow);
 	};
+
+	$scope.makeGraph = function (searchItem) {
+	  alert("making graph for " + searchItem + "!");
+	};
 }]);
 
 // code for test graph

@@ -19,7 +19,7 @@
 
     	<ul>
 			<li ng-repeat="searchItem in searchResults">
-				<p>{{searchItem}}</p>
+				<a href="#"><p ng-click="makeGraph(searchItem)">{{searchItem}}</p></a>
 			</li>
 		</ul>
     </div>
