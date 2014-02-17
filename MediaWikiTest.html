@@ -3,94 +3,49 @@
 <head>
 	<title>WikiMap - MediaWiki Testing Doc</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="./js/underscore-min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.min.js"></script>
+    <script src="./js/WikiSearch.js"></script>
 
 	<script>
-		function wikipediaCallAPI(preString, postString, callback) {
-			var searchString = document.getElementById("testData").value;
-			var wiki = document.getElementById("wikiName").value + "/api.php?";
-			var URL = wiki + preString + searchString + postString + "&callback=?&";
-
-			$.getJSON(URL, function (data) {
-				console.log(data);
-				callback(data);
-			});
-		}
-
-		function wikipediaAccumulator(preString, postString, callback) {
-			var searchString = document.getElementById("testData").value;
-			var wiki = document.getElementById("wikiName").value + "/api.php?";
-			var URL = wiki + preString + searchString + postString + "&callback=?&";
-
-			$.getJSON(URL + "continue=", _.partial(wikipediaAccumulatorCore, URL, callback, []));
-		}
-
-		function wikipediaAccumulatorCore(URL, callback, results, data) {
-			results.push(data);
-			if (data.continue)
-				$.getJSON(URL + $.param(data.continue), _.partial(wikipediaAccumulatorCore, URL, callback, results));
-			else
-				callback(results);
-		}
-
-		function wikipediaSearch() {
-			return wikipediaCallAPI("action=opensearch&search=", "&limit=10&namespace=0&format=json", wikipediaSearchShow);
-		}
-
-		function wikipediaSearchShow(data) {
-			document.getElementById("testMessage").innerHTML = data[1].join("<br>");
-		}
-
-		function wikipediaLinks(getRandomLinks) {
-			return wikipediaAccumulator("format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
-		}
-
-		function wikipediaLinksShow(getRandomLinks, results) {
-			var titleArray = _.chain(results)
-								.pluck("query")
-								.pluck("pages")
-								.map(function(array) {
-									return _.chain(array)
-												.flatten()
-												.first()
-												.value();
-											})
-								.pluck("links")
-								.flatten()
-								.pluck("title")
-								.value();
-
-			if (getRandomLinks) {
-				titleArray = _.chain(titleArray).shuffle().first(document.getElementById("testNumber").value).value();
-			}
-
-			document.getElementById("testMessage").innerHTML = titleArray.join("<br>");
-		}
-
-		function wikipediaPage() {
-			return wikipediaCallAPI("action=parse&format=json&page=", "&redirects&prop=text", wikipediaPageShow);
-		}
-
-		function wikipediaPageShow(data) {
-			document.getElementById("testMessage").innerHTML = data.parse.text["*"];
-		}
 	</script>
 </head>
 
-<body>
-	<input id="testData" value="Kitten"/>
-	<button onclick="wikipediaSearch()">Search Wikipedia</Button>
-	<button onclick="wikipediaLinks(false)">Get Links</Button>
-	<button onclick="wikipediaPage()">Get Page</Button>
-	<br>
-	<button onclick="wikipediaLinks(true)">Get This Many Random Links</Button>: <input id="testNumber" value="5">
-	<p>Use wiki:</p>
-	<select id="wikiName">
-	  <option value="http://en.wikipedia.org/w">English wikipedia</option>
-	  <option value="http://fr.wikipedia.org/w">French wikipedia</option>
-	</select>
-	<div id="testMessage"></div>
+<body ng-app="wikiApp">
+    <div ng-controller="WikiController">
+     	<hr>
+    	<input ng-model="searchText" id="ng-test-text"/> <!-- ng-change="textChange()"  -->
+		<button ng-click="wikipediaSearch()">Search Wikipedia</Button>
+		<button ng-click="wikipediaLinks(false)">Get Links</Button>
+		<button ng-click="wikipediaPage()">Get Page</Button>
+		<br>
+		<button ng-click="wikipediaLinks(true)">Get This Many Random Links</Button>:
+		<input ng-model="numberOfLinks" value="5">
+		<p>Use wiki:
+		<select ng-model="wikiName">
+		  <option value="http://en.wikipedia.org/w">English wikipedia</option>
+		  <option value="http://fr.wikipedia.org/w">French wikipedia</option>
+		</select>
+		</p>
 
-</body>
+		<h1>Search Results</h1>
+    	<ul>
+			<li ng-repeat="searchItem in searchResults">
+				<p>{{searchItem}}</p>
+			</li>
+		</ul>
+
+		<h1>Links</h1>
+    	<ul>
+			<li ng-repeat="linkItem in linkResults">
+				<p>{{linkItem}}</p>
+			</li>
+		</ul>
+
+		<h1>Page Text</h1>
+		<p ng-bind-html="pageText"></p>
+
+    </div>
+  </body>
 </html>
