@@ -40,7 +40,6 @@ function wikipediaAccumulatorCore(URL, callback, results, data) {
 
 function wikipediaSearchShow($scope, data) {
 	$scope.searchResults = data[1];
-	$scope.$apply() 
 }
 
 function wikipediaLinksShow($scope, getRandomLinks, results) {
@@ -66,10 +65,8 @@ function wikipediaLinksShow($scope, getRandomLinks, results) {
 	$scope.$apply() 
 }
 
-
 function wikipediaPageShow($scope, data) {
 	$scope.pageText= data.parse.text['*'];
-	$scope.$apply() 
 }
 
 wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $http) {
