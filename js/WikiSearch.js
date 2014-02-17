@@ -1,13 +1,24 @@
 var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
-function wikipediaCallAPI($scope, preString, postString, callback) {
-	var searchString = $scope.searchText;
+function wikipediaConstructURL($scope, preString, postString) {
 	var wiki = $scope.wikiName + "/api.php?";
-	var URL = wiki + preString + searchString + postString + "&callback=?&";
+	var searchString = $scope.searchText;
+	var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
+	return URL;
+}
 
-	$.getJSON(URL, function (data) {
-		callback(data);
-	});
+function wikipediaCallAPI($http, $scope, preString, postString, callback) {
+	var URL = wikipediaConstructURL($scope, preString, postString);
+
+	$http.jsonp(URL).
+		success(function(data, status){
+			callback($scope, data);
+		}).
+		error(function(data, status){
+			console.log("http request failed.");
+			console.log("   status = " + status);
+			console.log("   data = " + data);
+		});
 }
 
 function wikipediaAccumulator($scope, preString, postString, callback) {
@@ -67,8 +78,8 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.searchResults = ["a", "b", "c"];
 
 	$scope.wikipediaSearch = function() {
-		wikipediaCallAPI($scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", _.partial(wikipediaSearchShow, $scope));
 		$scope.searchResults = ["a", "b", "sdsdfsd"];
+		wikipediaCallAPI($http, $scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", wikipediaSearchShow);
 	};
 
 	$scope.wikipediaLinks = function (getRandomLinks) {
@@ -76,20 +87,6 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.wikipediaPage = function() {
-		var wiki = $scope.wikiName + "/api.php?";
-		var preString = "action=parse&format=json&page=";
-		var searchString = $scope.searchText;
-		var postString = "&redirects&prop=text";
-		var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
-
-		$http.jsonp(URL).
-			success(function(data, status){
-				$scope.pageText= data.parse.text['*'];
-			}).
-			error(function(data, status){
-				console.log("http request failed.");
-				console.log("   status = " + status);
-				console.log("   data = " + data);
-			});
+		wikipediaCallAPI($http, $scope, "action=parse&format=json&page=", "&redirects&prop=text", wikipediaPageShow);
 	};
 }]);
