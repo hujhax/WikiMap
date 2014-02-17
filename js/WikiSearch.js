@@ -24,7 +24,6 @@ function wikipediaCallAPI($http, $scope, preString, postString, callback) {
 function wikipediaAccumulator($scope, preString, postString, callback) {
 	var searchString = $scope.searchText;
 	var wiki = $scope.wikiName + "/api.php?";
-	console.log("$scope.wikiName = '" + $scope.wikiName +"'");
 	var URL = wiki + preString + searchString + postString + "&callback=?&";
 
 	$.getJSON(URL + "continue=", _.partial(wikipediaAccumulatorCore, URL, callback, []));
@@ -75,7 +74,6 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.searchResults = ["a", "b", "c"];
 
 	$scope.wikipediaSearch = function() {
-		$scope.searchResults = ["a", "b", "sdsdfsd"];
 		wikipediaCallAPI($http, $scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", wikipediaSearchShow);
 	};
 
