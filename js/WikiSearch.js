@@ -52,7 +52,7 @@ function wikipediaLinksShow($scope, getRandomLinks, results) {
 						.value();
 
 	if (getRandomLinks) {
-		titleArray = _.chain(titleArray).shuffle().first(document.getElementById("testNumber").value).value();
+		titleArray = _.chain(titleArray).shuffle().first($scope.numberOfLinks).value();
 	}
 
 	$scope.linkResults = titleArray;
