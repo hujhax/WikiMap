@@ -1,3 +1,5 @@
+var wikiModule = angular.module('wikiApp', []);
+
 function wikipediaCallAPI($scope, preString, postString, callback) {
 	var searchString = $scope.searchText;
 	var wiki = $scope.wikiName + "/api.php?";
@@ -63,7 +65,7 @@ function wikipediaPageShow($scope, data) {
 	$scope.$apply() 
 }
 
-function WikiController($scope) {
+wikiModule.controller('WikiController', ['$scope', function($scope) {
 	$scope.searchText = "Kitten";
 	$scope.items = [];
 	$scope.wikiName = "http://en.wikipedia.org/w";
@@ -84,5 +86,4 @@ function WikiController($scope) {
 	$scope.wikipediaPage = function() {
 		$scope.pageText=  wikipediaCallAPI($scope, "action=parse&format=json&page=", "&redirects&prop=text", _.partial(wikipediaPageShow, $scope));
 	};
-
-}
+}]);
