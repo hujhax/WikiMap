@@ -21,47 +21,12 @@ function wikipediaCallAPI($http, $scope, preString, postString, callback) {
 		});
 }
 
-function wikipediaAccumulator($scope, preString, postString, callback) {
-	var searchString = $scope.searchText;
-	var wiki = $scope.wikiName + "/api.php?";
-	var URL = wiki + preString + searchString + postString + "&callback=?&";
-
-	$.getJSON(URL + "continue=", _.partial(wikipediaAccumulatorCore, URL, callback, []));
-}
-
-function wikipediaAccumulatorCore(URL, callback, results, data) {
-	results.push(data);
-	if (data.continue)
-		$.getJSON(URL + $.param(data.continue), _.partial(wikipediaAccumulatorCore, URL, callback, results));
-	else
-		callback(results);
-}
-
 function wikipediaSearchShow($scope, data) {
 	$scope.searchResults = data[1];
 }
 
-function wikipediaLinksShow($scope, getRandomLinks, results) {
-	var titleArray = _.chain(results)
-						.pluck("query")
-						.pluck("pages")
-						.map(function(array) {
-							return _.chain(array)
-										.flatten()
-										.first()
-										.value();
-									})
-						.pluck("links")
-						.flatten()
-						.pluck("title")
-						.value();
-
-	if (getRandomLinks) {
-		titleArray = _.chain(titleArray).shuffle().first($scope.numberOfLinks).value();
-	}
-
-	$scope.linkResults = titleArray;
-	$scope.$apply() 
+function wikipediaLinksShow(getRandomLinks, $scope, data) {
+	$scope.linkResults = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value()
 }
 
 function wikipediaPageShow($scope, data) {
@@ -78,7 +43,7 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.wikipediaLinks = function (getRandomLinks) {
-		$scope.linkResults= wikipediaAccumulator($scope, "format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, $scope, getRandomLinks));
+		wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
 	};
 
 	$scope.wikipediaPage = function() {
