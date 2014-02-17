@@ -28,11 +28,7 @@ function wikipediaAccumulatorCore(URL, callback, results, data) {
 }
 
 function wikipediaSearchShow($scope, data) {
-	console.log("wikipediaSearchShow!");
-	console.log(data);
-	console.log(data[1]);
 	$scope.searchResults = data[1];
-	console.log($scope);
 	$scope.$apply() 
 }
 
