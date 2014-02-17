@@ -67,12 +67,8 @@ function wikipediaPageShow($scope, data) {
 
 wikiModule.controller('WikiController', ['$scope', function($scope) {
 	$scope.searchText = "Kitten";
-	$scope.items = [];
 	$scope.wikiName = "http://en.wikipedia.org/w";
 	$scope.searchResults = ["a", "b", "c"];
-	$scope.textChange = function() {
-		$scope.items=[$scope.searchText+' 1',$scope.searchText+' 2',$scope.searchText+' 3']
-	};
 
 	$scope.wikipediaSearch = function() {
 		wikipediaCallAPI($scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", _.partial(wikipediaSearchShow, $scope));
