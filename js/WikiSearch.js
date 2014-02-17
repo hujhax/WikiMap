@@ -61,11 +61,11 @@ function wikipediaLinksShow($scope, getRandomLinks, results) {
 
 
 function wikipediaPageShow($scope, data) {
-	$scope.pageText= data;
+	$scope.pageText= data.parse.text['*'];
 	$scope.$apply() 
 }
 
-wikiModule.controller('WikiController', ['$scope', function($scope) {
+wikiModule.controller('WikiController', ['$scope', function WikiController($scope) {
 	$scope.searchText = "Kitten";
 	$scope.wikiName = "http://en.wikipedia.org/w";
 	$scope.searchResults = ["a", "b", "c"];
