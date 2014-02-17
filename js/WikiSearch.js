@@ -76,6 +76,20 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.wikipediaPage = function() {
-		$scope.pageText=  wikipediaCallAPI($scope, "action=parse&format=json&page=", "&redirects&prop=text", _.partial(wikipediaPageShow, $scope));
+		var wiki = $scope.wikiName + "/api.php?";
+		var preString = "action=parse&format=json&page=";
+		var searchString = $scope.searchText;
+		var postString = "&redirects&prop=text";
+		var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
+
+		$http.jsonp(URL).
+			success(function(data, status){
+				$scope.pageText= data.parse.text['*'];
+			}).
+			error(function(data, status){
+				console.log("http request failed.");
+				console.log("   status = " + status);
+				console.log("   data = " + data);
+			});
 	};
 }]);
