@@ -1,4 +1,4 @@
-var wikiModule = angular.module('wikiApp', []);
+var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
 function wikipediaCallAPI($scope, preString, postString, callback) {
 	var searchString = $scope.searchText;
