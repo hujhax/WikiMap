@@ -65,7 +65,7 @@ function wikipediaPageShow($scope, data) {
 	$scope.$apply() 
 }
 
-wikiModule.controller('WikiController', ['$scope', function WikiController($scope) {
+wikiModule.controller('WikiController', ['$scope', function($scope) {
 	$scope.searchText = "Kitten";
 	$scope.wikiName = "http://en.wikipedia.org/w";
 	$scope.searchResults = ["a", "b", "c"];
