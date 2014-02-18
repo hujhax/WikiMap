@@ -53,6 +53,11 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	  createMindMap(searchItem,400,400);
 	};
 
+	$scope.expandRandomNode = function () {
+		debugger;
+		alert("hi!"); 
+	}; 
+
 	$scope.wikipediaSearch();
 }]);
 
