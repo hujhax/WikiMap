@@ -36,7 +36,6 @@ function wikipediaPageShow($scope, data) {
 wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $http) {
 	$scope.searchText = "Kitten";
 	$scope.wikiName = "http://en.wikipedia.org/w";
-	$scope.searchResults = ["a", "b", "c"];
 
 	$scope.wikipediaSearch = function() {
 		wikipediaCallAPI($http, $scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", wikipediaSearchShow);
@@ -53,6 +52,8 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.makeGraph = function (searchItem) {
 	  createMindMap(searchItem,400,400);
 	};
+
+	$scope.wikipediaSearch();
 }]);
 
 // code for test graph
