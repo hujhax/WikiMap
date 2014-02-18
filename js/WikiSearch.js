@@ -51,7 +51,7 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.makeGraph = function (searchItem) {
-	  createMindMap(searchItem,300,300);
+	  createMindMap(searchItem,400,400);
 	};
 }]);
 
