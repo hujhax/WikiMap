@@ -16,12 +16,14 @@
     %script{src: "./js/underscore-min.js"}
     %link{href: "http://fonts.googleapis.com/css?family=Open+Sans:600", rel: "stylesheet", type: "text/css"}/
     %script{src: "bower_components/modernizr/modernizr.js"}
+    %script{charset: "utf-8", src: "http://d3js.org/d3.v3.min.js"}
+    %script{charset: "utf-8", src: "./js/mindmap.js"}
   %body
     .row
       .large-12.columns
         %h1 Welcome to WikiMaps
-        %script{charset: "utf-8", src: "http://d3js.org/d3.v3.min.js"}
-        %script{charset: "utf-8", src: "./js/mindmap.js"}
+        :javascript
+          createMindMap("Cat", window.screen.width, window.screen.height);
     .row
       .large-12.columns
         .panel

@@ -2,24 +2,26 @@
 
 var didDrag = false;
 
-var width = window.screen.width,
-    height = window.screen.height;
+var force, svg, nodes, node, link;
+var links = [];
 
-var force = d3.layout.force()
+function createMindMap(startNode, width, height) {
+  svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  node = svg.selectAll(".node");
+  link = svg.selectAll(".link");
+
+  force = d3.layout.force()
     .charge(-1420)
     .linkDistance(150)
     .size([width, height]);
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+  nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
 
-var nodes = [ {"name": "Cat", "clickable": true, "activated": false} ];
-var links = [];
-var node = svg.selectAll(".node");
-var link = svg.selectAll(".link");
-
-mindMapUpdate();
+  mindMapUpdate();
+}
 
 function mindMapUpdate() {
   force
