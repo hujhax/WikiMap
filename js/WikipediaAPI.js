@@ -1,0 +1,41 @@
+// API object
+
+function WikipediaAPI() {
+}
+
+WikipediaAPI.prototype.constructURL = function($scope, preString, searchString, postString) {
+	var wiki = $scope.wikiName + "/api.php?";
+	var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
+	return URL;
+}
+
+WikipediaAPI.prototype.call = function($http, $scope, preString, searchString, postString, callback) {
+	var URL = this.constructURL($scope, preString, searchString, postString);
+
+	$http.jsonp(URL).
+		success(function(data, status){
+			callback($scope, data);
+		}).
+		error(function(data, status){
+			console.log("http request failed.");
+			console.log("   status = " + status);
+			console.log("   data = " + data);
+		});
+}
+
+WikipediaAPI.prototype.searchShow = function($scope, data) {
+	$scope.searchResults = data[1];
+}
+
+WikipediaAPI.prototype.linksShow = function(getRandomLinks, $scope, data) {
+	var allLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
+
+	if (getRandomLinks) {
+		allLinks = _.chain(allLinks).shuffle().first($scope.numberOfLinks).value();
+	}
+	$scope.linkResults = allLinks;
+}
+
+WikipediaAPI.prototype.pageShow = function($scope, data) {
+	$scope.pageText= data.parse.text['*'];
+}
