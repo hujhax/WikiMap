@@ -52,7 +52,9 @@ function mindMapUpdate() {
       .append("g")
       .attr("class", "node")
       .call(force.drag);
-  
+      
+  node.exit().remove();
+
   force.start();
 
   node.append("ellipse")
