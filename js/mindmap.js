@@ -29,6 +29,10 @@ function createMindMap(startNode, width, height) {
   mindMapUpdate();
 }
 
+function nodeName(d) {
+  return d.name;
+}
+
 function mindMapUpdate() {
   force
       .nodes(nodes)
@@ -41,7 +45,7 @@ function mindMapUpdate() {
       .insert("line", ".node")  // we want the lines to go *behind* the nodes
       .attr("class", "link");
 
-  node = node.data(nodes);
+  node = node.data(nodes, nodeName);
 
   node
       .enter()
