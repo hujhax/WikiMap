@@ -1,13 +1,18 @@
 var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
-function wikipediaConstructURL($scope, preString, searchString, postString) {
+// API object
+
+function WikipediaAPI() {
+}
+
+WikipediaAPI.prototype.constructURL = function($scope, preString, searchString, postString) {
 	var wiki = $scope.wikiName + "/api.php?";
 	var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 	return URL;
 }
 
-function wikipediaCallAPI($http, $scope, preString, searchString, postString, callback) {
-	var URL = wikipediaConstructURL($scope, preString, searchString, postString);
+WikipediaAPI.prototype.call = function($http, $scope, preString, searchString, postString, callback) {
+	var URL = this.constructURL($scope, preString, searchString, postString);
 
 	$http.jsonp(URL).
 		success(function(data, status){
@@ -20,11 +25,11 @@ function wikipediaCallAPI($http, $scope, preString, searchString, postString, ca
 		});
 }
 
-function wikipediaSearchShow($scope, data) {
+WikipediaAPI.prototype.searchShow = function($scope, data) {
 	$scope.searchResults = data[1];
 }
 
-function wikipediaLinksShow(getRandomLinks, $scope, data) {
+WikipediaAPI.prototype.linksShow = function(getRandomLinks, $scope, data) {
 	var allLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
 
 	if (getRandomLinks) {
@@ -33,24 +38,28 @@ function wikipediaLinksShow(getRandomLinks, $scope, data) {
 	$scope.linkResults = allLinks;
 }
 
-function wikipediaPageShow($scope, data) {
+WikipediaAPI.prototype.pageShow = function($scope, data) {
 	$scope.pageText= data.parse.text['*'];
 }
+
+// Angular controller 
 
 wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $http) {
 	$scope.searchText = "Kitten";
 	$scope.wikiName = "http://en.wikipedia.org/w";
 
+	var API = new WikipediaAPI();
+
 	$scope.wikipediaSearch = function() {
-		wikipediaCallAPI($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", wikipediaSearchShow);
+		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 	};
 
 	$scope.wikipediaLinks = function (getRandomLinks) {
-		wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", $scope.searchText, "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
+		API.call($http, $scope, "format=json&action=query&titles=", $scope.searchText, "&redirects&pllimit=500&prop=links", _.partial(API.linksShow, getRandomLinks));
 	};
 
 	$scope.wikipediaPage = function() {
-		wikipediaCallAPI($http, $scope, "action=parse&format=json&page=", $scope.searchText, "&redirects&prop=text", wikipediaPageShow);
+		API.call($http, $scope, "action=parse&format=json&page=", $scope.searchText, "&redirects&prop=text", API.pageShow);
 	};
 
 	$scope.makeGraph = function (searchItem) {
@@ -64,19 +73,20 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 			randomNode.activated = true;
 			var randomNodeName = randomNode.name;
 
-			wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
-				             function($scope, data) {
-				             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-				             	_.each(fourLinks, _.partial(mindMapAddChild, nodeNameToIndex(randomNodeName)));
-								mindMapUpdate();
-				             });
+			API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
+			             function($scope, data) {
+			             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
+			             	_.each(fourLinks, _.partial(mindMapAddChild, nodeNameToIndex(randomNodeName)));
+							mindMapUpdate();
+			             });
 		}
 	};
 
 	$scope.wikipediaSearch();
 }]);
 
-// code for test graph
+// random test graph
+
 wikiModule.directive('ngSparkline', function() {
   return {
     restrict: 'A',
