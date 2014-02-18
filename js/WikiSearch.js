@@ -2,7 +2,6 @@ var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
 function wikipediaConstructURL($scope, preString, searchString, postString) {
 	var wiki = $scope.wikiName + "/api.php?";
-	var searchString = $scope.searchText;
 	var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 	return URL;
 }
