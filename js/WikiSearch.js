@@ -58,9 +58,20 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.expandRandomNode = function () {
-		var randomNodeName = _.chain(nodes).filter(function(obj) {return !obj.activated;}).sample().value().name;
-		alert("We will expand the node called '" + randomNodeName + "'.");
-	}; 
+		var availableNodes = _.chain(nodes).filter(function(obj) {return !obj.activated;}).value();
+		if (availableNodes.length > 0) {
+			var randomNode = _.sample(availableNodes);
+			randomNode.activated = true;
+			var randomNodeName = randomNode.name;
+
+			wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
+				             function($scope, data) {
+				             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
+				             	_.each(fourLinks, _.partial(mindMapAddChild, nodeNameToIndex(randomNodeName)));
+								mindMapUpdate();
+				             });
+		}
+	};
 
 	$scope.wikipediaSearch();
 }]);
