@@ -9,6 +9,7 @@
 	<script charset='utf-8' src='http://d3js.org/d3.v3.min.js'></script>
     <script src="./js/WikiSearch.js"></script>
     <script src="./js/mindmap.js"></script>
+    <link href='css/app.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="./css/TestCode.css">
 </head>
 
@@ -22,6 +23,9 @@
 				<a href="#"><p ng-click="makeGraph(searchItem)">{{searchItem}}</p></a>
 			</li>
 		</ul>
+
+		<div class="mind-map"></div>
+		<script>createMindMap("Cat", 400, 400);</script>
     </div>
   </body>
 </html>
