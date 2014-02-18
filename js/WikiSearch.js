@@ -11,15 +11,7 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.wikipediaSearch = function() {
 		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 	};
-
-	$scope.wikipediaLinks = function (getRandomLinks) {
-		API.call($http, $scope, "format=json&action=query&titles=", $scope.searchText, "&redirects&pllimit=500&prop=links", _.partial(API.linksShow, getRandomLinks));
-	};
-
-	$scope.wikipediaPage = function() {
-		API.call($http, $scope, "action=parse&format=json&page=", $scope.searchText, "&redirects&prop=text", API.pageShow);
-	};
-
+	
 	$scope.makeGraph = function (searchItem) {
 	  createMindMap(searchItem,400,400);
 	};
