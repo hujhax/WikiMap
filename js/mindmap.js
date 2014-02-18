@@ -6,7 +6,7 @@ var force, svg, nodes, node, link;
 var links = [];
 
 function createMindMap(startNode, width, height) {
-  svg = d3.select("body").append("svg")
+  svg = d3.select(".mind-map").append("svg")
       .attr("width", width)
       .attr("height", height);
 
