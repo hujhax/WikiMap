@@ -1,14 +1,14 @@
 var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
-function wikipediaConstructURL($scope, preString, postString) {
+function wikipediaConstructURL($scope, preString, searchString, postString) {
 	var wiki = $scope.wikiName + "/api.php?";
 	var searchString = $scope.searchText;
 	var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 	return URL;
 }
 
-function wikipediaCallAPI($http, $scope, preString, postString, callback) {
-	var URL = wikipediaConstructURL($scope, preString, postString);
+function wikipediaCallAPI($http, $scope, preString, searchString, postString, callback) {
+	var URL = wikipediaConstructURL($scope, preString, searchString, postString);
 
 	$http.jsonp(URL).
 		success(function(data, status){
@@ -38,15 +38,15 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.wikiName = "http://en.wikipedia.org/w";
 
 	$scope.wikipediaSearch = function() {
-		wikipediaCallAPI($http, $scope, "action=opensearch&search=", "&limit=10&namespace=0&format=json", wikipediaSearchShow);
+		wikipediaCallAPI($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", wikipediaSearchShow);
 	};
 
 	$scope.wikipediaLinks = function (getRandomLinks) {
-		wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
+		wikipediaCallAPI($http, $scope, "format=json&action=query&titles=", $scope.searchText, "&redirects&pllimit=500&prop=links", _.partial(wikipediaLinksShow, getRandomLinks));
 	};
 
 	$scope.wikipediaPage = function() {
-		wikipediaCallAPI($http, $scope, "action=parse&format=json&page=", "&redirects&prop=text", wikipediaPageShow);
+		wikipediaCallAPI($http, $scope, "action=parse&format=json&page=", $scope.searchText, "&redirects&prop=text", wikipediaPageShow);
 	};
 
 	$scope.makeGraph = function (searchItem) {
