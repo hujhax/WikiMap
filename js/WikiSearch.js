@@ -54,8 +54,8 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.expandRandomNode = function () {
-		debugger;
-		alert("hi!"); 
+		var randomNodeName = _.chain(nodes).filter(function(obj) {return !obj.activated;}).sample().value().name;
+		alert("We will expand the node called '" + randomNodeName + "'.");
 	}; 
 
 	$scope.wikipediaSearch();
