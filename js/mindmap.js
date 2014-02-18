@@ -107,10 +107,14 @@ function mindMapClickNode(d) {
 }
 
 function mindMapAddChild(parentIndex, childName) {
-  var childIndex = _.chain(nodes).pluck("name").indexOf(childName).value();
+  var childIndex = nodeNameToIndex(childName);
 
   if (childIndex == -1) // not found!
     childIndex = nodes.push({name: childName, clickable: (childName == "Tiger")}) - 1;
 
   links.push({"source": childIndex, "target": parentIndex});
+}
+
+function nodeNameToIndex(nodeName) {
+  return _.chain(nodes).pluck("name").indexOf(nodeName).value();
 }
