@@ -19,9 +19,9 @@ var links = [];
 var node = svg.selectAll(".node");
 var link = svg.selectAll(".link");
 
-update();
+mindMapUpdate();
 
-function update() {
+function mindMapUpdate() {
   force
       .nodes(nodes)
       .links(links)
@@ -49,7 +49,7 @@ function update() {
       // (we want to repsond to clicks but not drags.)
       .on("mousedown", function() {didDrag = false;})
       .on("mousemove", function() {didDrag = true;})
-      .on("mouseup", function(d) {if (!didDrag) clickNode(d);}); // todo: fire if there was just a tiny drag
+      .on("mouseup", function(d) {if (!didDrag) mindMapClickNode(d);}); // todo: fire if there was just a tiny drag
 
   node.append("title")
       .text(function(d) { return d.name; });
@@ -69,7 +69,7 @@ function update() {
   });
 }
 
-function clickNode(d) {
+function mindMapClickNode(d) {
   if (! d.clickable) return;
   if (d.activated) return;
 
@@ -86,13 +86,13 @@ function clickNode(d) {
   }
 
   console.log(children);
-  _.each(children, _.partial(addChild,d.index));
+  _.each(children, _.partial(mindMapAddChild,d.index));
 
-  update();
+  mindMapUpdate();
   d.activated = true;
 }
 
-function addChild(parentIndex, childName) {
+function mindMapAddChild(parentIndex, childName) {
   var childIndex = _.chain(nodes).pluck("name").indexOf(childName).value();
 
   if (childIndex == -1) // not found!
