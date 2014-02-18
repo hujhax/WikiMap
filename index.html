@@ -17,13 +17,16 @@
     <script src='./js/underscore-min.js'></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
     <script src='bower_components/modernizr/modernizr.js'></script>
+    <script charset='utf-8' src='http://d3js.org/d3.v3.min.js'></script>
+    <script charset='utf-8' src='./js/mindmap.js'></script>
   </head>
   <body>
     <div class='row'>
       <div class='large-12 columns'>
         <h1>Welcome to WikiMaps</h1>
-        <script charset='utf-8' src='http://d3js.org/d3.v3.min.js'></script>
-        <script charset='utf-8' src='./js/mindmap.js'></script>
+        <script>
+          createMindMap("Cat", window.screen.width, window.screen.height);
+        </script>
       </div>
     </div>
     <div class='row'>
