@@ -26,7 +26,12 @@ function wikipediaSearchShow($scope, data) {
 }
 
 function wikipediaLinksShow(getRandomLinks, $scope, data) {
-	$scope.linkResults = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value()
+	var allLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
+
+	if (getRandomLinks) {
+		allLinks = _.chain(allLinks).shuffle().first($scope.numberOfLinks).value();
+	}
+	$scope.linkResults = allLinks;
 }
 
 function wikipediaPageShow($scope, data) {
