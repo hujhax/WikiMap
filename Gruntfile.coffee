@@ -1,7 +1,7 @@
 module.exports = (grunt) ->
     grunt.initConfig
         jshint:
-            all: ['./js/mindmap.js']
+            all: ['./js/MindMap.js', './js/WikiSearch.js']
         uglify:
             options:
                 mangle: true #shorten variable names
