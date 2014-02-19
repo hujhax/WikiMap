@@ -5,6 +5,7 @@
  	 .controller('WikiSearch', ['$scope', '$http', function($scope, $http) {
 		$scope.searchText = "Kitten";
 		$scope.wikiName = "http://en.wikipedia.org/w";
+		$scope.mapData = [];
 
 		var API = new WikipediaAPI();
 		var mindMap = new MindMap(400,400);
@@ -13,8 +14,13 @@
 			API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 		};
 		
+		$scope.createMapData = function (nodeName) {
+			$scope.mapData.push({parent: nodeName, children: []});
+		};
+
 		$scope.makeGraph = function (searchItem) {
 		  mindMap.init(searchItem);
+		  $scope.createMapData(searchItem);
 		};
 
 		$scope.expandRandomNode = function () {
@@ -28,7 +34,13 @@
 				             function($scope, data) {
 				             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
 				             	var parentIndex = mindMap.nodeNameToIndex(randomNodeName);
-				             	_.each(fourLinks, function(childName) { mindMap.addChild(parentIndex, childName); });
+				             	var parentMapData = _.findWhere($scope.mapData, {parent: randomNodeName});
+				             	_.each(fourLinks, function(childName) {
+				             			mindMap.addChild(parentIndex, childName);
+				             			parentMapData.children.push(childName);
+				             			$scope.createMapData(childName);
+				             		});
+
 								mindMap.update();
 				             });
 			}
