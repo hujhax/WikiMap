@@ -79,29 +79,6 @@ MindMap.prototype.update = function() {
   });
 }
 
-function mindMapClickNode(d) {
-  if (! d.clickable) return;
-  if (d.activated) return;
-
-  var children = [];
-  switch (d.name) {
-    case "Cat":
-      children = ["Feline", "Purring", "Mammal", "Feral Cats", "Tiger"];
-      break;
-    case "Tiger":
-      children = ["Feline", "Bengal Tiger", "Liger", "Sumatra"];
-      break;
-    default:
-      break;
-  }
-
-  console.log(children);
-  _.each(children, _.partial(mindMapAddChild,d.index));
-
-  mindMapUpdate();
-  d.activated = true;
-}
-
 MindMap.prototype.addChild = function(parentIndex, childName) {
   var childIndex = this.nodeNameToIndex(childName);
 
