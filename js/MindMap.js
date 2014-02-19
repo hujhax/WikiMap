@@ -83,7 +83,7 @@ MindMap.prototype.addChild = function(parentIndex, childName) {
   var childIndex = this.nodeNameToIndex(childName);
 
   if (childIndex == -1) // not found!
-    childIndex = this.nodes.push({name: childName, clickable: (childName == "Tiger")}) - 1;
+    childIndex = this.nodes.push({name: childName}) - 1;
 
   this.links.push({"source": childIndex, "target": parentIndex});
 }

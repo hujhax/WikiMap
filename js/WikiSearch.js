@@ -1,6 +1,6 @@
 var wikiModule = angular.module('wikiApp', ['ngSanitize']);
 
-// Angular controller 
+// Angular controller for app
 
 wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $http) {
 	$scope.searchText = "Kitten";

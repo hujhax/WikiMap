@@ -1,4 +1,4 @@
-// API object
+// API object for wikipedia.
 
 function WikipediaAPI() {
 }
@@ -17,9 +17,7 @@ WikipediaAPI.prototype.call = function($http, $scope, preString, searchString, p
 			callback($scope, data);
 		}).
 		error(function(data, status){
-			console.log("http request failed.");
-			console.log("   status = " + status);
-			console.log("   data = " + data);
+			console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
 		});
 }
 
