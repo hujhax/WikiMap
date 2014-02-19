@@ -17,7 +17,7 @@ function MindMap(width, height) {
 };
 
 MindMap.prototype.init = function(startNode) {
-  this.nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
+  this.nodes = [ {"name": startNode, "activated": false} ];
   this.links = [];
   this.update();
 }
