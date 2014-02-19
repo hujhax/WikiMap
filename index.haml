@@ -1,0 +1,26 @@
+!!!
+/ HTML5 doctype
+%html
+  %head
+    %title WikiMap - MediaWiki Testing Doc
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-type"}
+      %script{:src => "./js/underscore-min.js"}
+      %script{:src => "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"}
+      %script{:src => "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.min.js"}
+      %script{:charset => "utf-8", :src => "http://d3js.org/d3.v3.min.js"}
+      %script{:src => "./js/WikipediaAPI.js"}
+      %script{:src => "./js/WikiSearch.js"}
+      %script{:src => "./js/MindMap.js"}
+      %link{:href => "css/app.css", :rel => "stylesheet"}
+  %body{"ng-app" => "wikiApp"}
+    %div{"ng-controller" => "WikiController"}
+      %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText"}/
+      / ng-change="textChange()"
+      %input{:hidden => "", "ng-model" => "wikiName", :value => "http://en.wikipedia.org/w"}/
+      %ul
+        %li{"ng-repeat" => "searchItem in searchResults"}
+          %a{:href => "#"}
+            %p{"ng-click" => "makeGraph(searchItem)"} {{searchItem}}
+      %button{"ng-click" => "expandRandomNode()"}
+        Expand a Random Node
+      .mind-map 
