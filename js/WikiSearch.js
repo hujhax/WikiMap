@@ -7,17 +7,18 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.wikiName = "http://en.wikipedia.org/w";
 
 	var API = new WikipediaAPI();
+	var mindMap = new MindMap();
 
 	$scope.wikipediaSearch = function() {
 		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 	};
 	
 	$scope.makeGraph = function (searchItem) {
-	  createMindMap(searchItem,400,400);
+	  mindMap.init(searchItem,400,400);
 	};
 
 	$scope.expandRandomNode = function () {
-		var availableNodes = _.chain(nodes).filter(function(obj) {return !obj.activated;}).value();
+		var availableNodes = _.chain(mindMap.nodes).filter(function(obj) {return !obj.activated;}).value();
 		if (availableNodes.length > 0) {
 			var randomNode = _.sample(availableNodes);
 			randomNode.activated = true;
@@ -26,8 +27,9 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 			API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
 			             function($scope, data) {
 			             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-			             	_.each(fourLinks, _.partial(mindMapAddChild, nodeNameToIndex(randomNodeName)));
-							mindMapUpdate();
+			             	var parentIndex = mindMap.nodeNameToIndex(randomNodeName);
+			             	_.each(fourLinks, function(childName) { mindMap.addChild(parentIndex, childName); });
+							mindMap.update();
 			             });
 		}
 	};

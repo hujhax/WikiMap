@@ -1,63 +1,64 @@
 // code that displays the basic mind map in WikiMap.
 
-var didDrag = false;
+function MindMap() {
+  this.didDrag = false;
+  this.firstCall = true;
+  this.links = [];
+};
 
-var force, svg, nodes, node, link;
-var links = [];
-
-var firstCall = true;
-
-function createMindMap(startNode, width, height) {
-  if (firstCall) {
-    svg = d3.select(".mind-map").append("svg")
+MindMap.prototype.init = function(startNode, width, height) {
+  if (this.firstCall) {
+    this.svg = d3.select(".mind-map").append("svg")
         .attr("width", width)
         .attr("height", height);
 
-    node = svg.selectAll(".node");
-    link = svg.selectAll(".link");
+    this.node = this.svg.selectAll(".node");
+    this.link = this.svg.selectAll(".link");
 
-    force = d3.layout.force()
+    this.force = d3.layout.force()
       .charge(-1420)
       .linkDistance(150)
       .size([width, height]);
 
-    firstCall = false;
+    this.firstCall = false;
   }
 
-  nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
+  this.nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
 
-  mindMapUpdate();
+  this.update();
 }
 
-function nodeName(d) {
+MindMap.prototype.nodeName = function(d) {
   return d.name;
 }
 
-function mindMapUpdate() {
-  force
-      .nodes(nodes)
-      .links(links)
+MindMap.prototype.update = function() {
+  var self= this; // for closures
+
+  this.force
+      .nodes(this.nodes)
+      .links(this.links)
       .start();
 
-  link = link.data(links);
-  link
+  this.link = this.link.data(this.links);
+  this.link
       .enter()
       .insert("line", ".node")  // we want the lines to go *behind* the nodes
       .attr("class", "link");
 
-  node = node.data(nodes, nodeName);
+  this.node = this.node.data(this.nodes, this.nodeName);
 
-  node
+  this.node
       .enter()
       .append("g")
       .attr("class", "node")
-      .call(force.drag);
+      .call(this.force.drag);
       
-  node.exit().remove();
+  this.node.exit().remove();
 
-  force.start();
+  this.force.start();
 
-  node.append("ellipse")
+  this.node.append("ellipse")
       .attr("rx", 50)
       .attr("ry", 30)
       // (we want to repsond to clicks but not drags.)
@@ -65,21 +66,22 @@ function mindMapUpdate() {
       .on("mousemove", function() {didDrag = true;})
       .on("mouseup", function(d) {if (!didDrag) mindMapClickNode(d);}); // todo: fire if there was just a tiny drag
 
-  node.append("title")
+  this.node.append("title")
       .text(function(d) { return d.name; });
 
-  node.append("text")
+  this.node.append("text")
     .attr("dx", -45)
     .attr("dy", ".35em")
     .text(function(d) { return d.name; });
 
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+  this.force.on("tick", function() {
+    // debugger;
+    self.link.attr("x1", function(d) { return d.source.x; })
+             .attr("y1", function(d) { return d.source.y; })
+             .attr("x2", function(d) { return d.target.x; })
+             .attr("y2", function(d) { return d.target.y; });
     
-    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    self.node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   });
 }
 
@@ -106,15 +108,15 @@ function mindMapClickNode(d) {
   d.activated = true;
 }
 
-function mindMapAddChild(parentIndex, childName) {
-  var childIndex = nodeNameToIndex(childName);
+MindMap.prototype.addChild = function(parentIndex, childName) {
+  var childIndex = this.nodeNameToIndex(childName);
 
   if (childIndex == -1) // not found!
-    childIndex = nodes.push({name: childName, clickable: (childName == "Tiger")}) - 1;
+    childIndex = this.nodes.push({name: childName, clickable: (childName == "Tiger")}) - 1;
 
-  links.push({"source": childIndex, "target": parentIndex});
+  this.links.push({"source": childIndex, "target": parentIndex});
 }
 
-function nodeNameToIndex(nodeName) {
-  return _.chain(nodes).pluck("name").indexOf(nodeName).value();
+MindMap.prototype.nodeNameToIndex = function(nodeName) {
+  return _.chain(this.nodes).pluck("name").indexOf(nodeName).value();
 }
