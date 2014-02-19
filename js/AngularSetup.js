@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  debugger; 
   // create the angular app
   angular.module('wikiApp', ['WikiControllers']);
 
