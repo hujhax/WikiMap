@@ -44,27 +44,30 @@ MindMap.prototype.update = function() {
 
   this.node = this.node.data(this.nodes, this.nodeName);
 
-  this.node
-      .enter()
-      .append("g")
-      .attr("class", "node")
-      .call(this.force.drag);
+  var newNodes = this.node.enter().append("g");
+
+  newNodes
+    .attr("class", "node")
+    .call(this.force.drag);
+
+  newNodes
+    .append("ellipse")
+    .attr("rx", 50)
+    .attr("ry", 30)
+
+  newNodes
+    .append("title")
+    .text(function(d) { return d.name; });
+
+  newNodes
+    .append("text")
+    .attr("dx", -45)
+    .attr("dy", ".35em")
+    .text(function(d) { return d.name; });
       
   this.node.exit().remove();
 
   this.force.start();
-
-  this.node.append("ellipse")
-      .attr("rx", 50)
-      .attr("ry", 30)
-
-  this.node.append("title")
-      .text(function(d) { return d.name; });
-
-  this.node.append("text")
-    .attr("dx", -45)
-    .attr("dy", ".35em")
-    .text(function(d) { return d.name; });
 
   this.force.on("tick", function() {
     self.link.attr("x1", function(d) { return d.source.x; })
