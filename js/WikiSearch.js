@@ -7,14 +7,14 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	$scope.wikiName = "http://en.wikipedia.org/w";
 
 	var API = new WikipediaAPI();
-	var mindMap = new MindMap();
+	var mindMap = new MindMap(400,400);
 
 	$scope.wikipediaSearch = function() {
 		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 	};
 	
 	$scope.makeGraph = function (searchItem) {
-	  mindMap.init(searchItem,400,400);
+	  mindMap.init(searchItem);
 	};
 
 	$scope.expandRandomNode = function () {

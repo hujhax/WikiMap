@@ -1,30 +1,24 @@
 // code that displays the basic mind map in WikiMap.
 
-function MindMap() {
+function MindMap(width, height) {
   this.didDrag = false;
-  this.firstCall = true;
   this.links = [];
+
+  this.svg = d3.select(".mind-map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  this.node = this.svg.selectAll(".node");
+  this.link = this.svg.selectAll(".link");
+
+  this.force = d3.layout.force()
+  .charge(-1420)
+  .linkDistance(150)
+  .size([width, height]);
 };
 
-MindMap.prototype.init = function(startNode, width, height) {
-  if (this.firstCall) {
-    this.svg = d3.select(".mind-map").append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    this.node = this.svg.selectAll(".node");
-    this.link = this.svg.selectAll(".link");
-
-    this.force = d3.layout.force()
-      .charge(-1420)
-      .linkDistance(150)
-      .size([width, height]);
-
-    this.firstCall = false;
-  }
-
+MindMap.prototype.init = function(startNode) {
   this.nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
-
   this.update();
 }
 
