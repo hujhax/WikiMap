@@ -12,9 +12,9 @@ function MindMap(width, height) {
   this.link = this.svg.selectAll(".link");
 
   this.force = d3.layout.force()
-  .charge(-1420)
-  .linkDistance(150)
-  .size([width, height]);
+    .charge(-1420)
+    .linkDistance(150)
+    .size([width, height]);
 };
 
 MindMap.prototype.init = function(startNode) {
@@ -55,10 +55,6 @@ MindMap.prototype.update = function() {
   this.node.append("ellipse")
       .attr("rx", 50)
       .attr("ry", 30)
-      // (we want to repsond to clicks but not drags.)
-      .on("mousedown", function() {didDrag = false;})
-      .on("mousemove", function() {didDrag = true;})
-      .on("mouseup", function(d) {if (!didDrag) mindMapClickNode(d);}); // todo: fire if there was just a tiny drag
 
   this.node.append("title")
       .text(function(d) { return d.name; });
@@ -69,7 +65,6 @@ MindMap.prototype.update = function() {
     .text(function(d) { return d.name; });
 
   this.force.on("tick", function() {
-    // debugger;
     self.link.attr("x1", function(d) { return d.source.x; })
              .attr("y1", function(d) { return d.source.y; })
              .attr("x2", function(d) { return d.target.x; })
