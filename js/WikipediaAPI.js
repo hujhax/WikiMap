@@ -26,12 +26,7 @@ WikipediaAPI.prototype.searchShow = function($scope, data) {
 }
 
 WikipediaAPI.prototype.linksShow = function(getRandomLinks, $scope, data) {
-	var allLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
-
-	if (getRandomLinks) {
-		allLinks = _.chain(allLinks).shuffle().first($scope.numberOfLinks).value();
-	}
-	$scope.linkResults = allLinks;
+	$scope.linkResults = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
 }
 
 WikipediaAPI.prototype.pageShow = function($scope, data) {
