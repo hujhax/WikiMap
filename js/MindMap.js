@@ -2,7 +2,6 @@
 
 function MindMap(width, height) {
   this.didDrag = false;
-  this.links = [];
 
   this.svg = d3.select(".mind-map").append("svg")
     .attr("width", width)
@@ -19,6 +18,7 @@ function MindMap(width, height) {
 
 MindMap.prototype.init = function(startNode) {
   this.nodes = [ {"name": startNode, "clickable": true, "activated": false} ];
+  this.links = [];
   this.update();
 }
 
@@ -39,6 +39,8 @@ MindMap.prototype.update = function() {
       .enter()
       .insert("line", ".node")  // we want the lines to go *behind* the nodes
       .attr("class", "link");
+
+  this.link.exit().remove();
 
   this.node = this.node.data(this.nodes, this.nodeName);
 
