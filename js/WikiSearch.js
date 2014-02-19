@@ -18,10 +18,10 @@ wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $ht
 	};
 
 	$scope.expandRandomNode = function () {
-		var availableNodes = _.chain(mindMap.nodes).filter(function(obj) {return !obj.activated;}).value();
+		var availableNodes = _.chain(mindMap.nodes).filter(function(obj) {return !obj.expanded;}).value();
 		if (availableNodes.length > 0) {
 			var randomNode = _.sample(availableNodes);
-			randomNode.activated = true;
+			randomNode.expanded = true;
 			var randomNodeName = randomNode.name;
 
 			API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
