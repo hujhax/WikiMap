@@ -101,7 +101,7 @@
 
             force.links(linksInD3Format);
 
-            link = link.data(linksAsStringPairs);
+            link = link.data(linksInD3Format);
 
             link
                 .enter()
