@@ -8,7 +8,8 @@
       return {
         restrict: 'EA',
         scope: {
-          data: "="
+          data: "=",
+          onClick: "&"
         },
         link: function(scope, iElement, iAttrs) {
           scope.didDrag = false;
@@ -74,6 +75,7 @@
 
             newNodes
               .append("ellipse")
+              .on("click", function(d, i){return scope.onClick({item: d});})
               .attr("rx", 50)
               .attr("ry", 30)
 

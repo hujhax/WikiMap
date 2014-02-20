@@ -44,6 +44,12 @@
 			}
 		};
 
+		$scope.clickMap = function(item){
+			console.log("O GLORIOUS DAY A CLICK");
+			console.log(item);
+		};
+
+
 		$scope.wikipediaSearch();
 	}]);
 }());
