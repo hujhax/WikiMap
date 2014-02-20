@@ -13,8 +13,12 @@
 			API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 		};
 		
+		$scope.mapDataItem = function (nodeName) {
+			return {parent: nodeName, children: []};
+		};
+
 		$scope.createMapData = function (nodeName) {
-			$scope.mapData= [{parent: nodeName, children: []}];
+			$scope.mapData= [$scope.mapDataItem(nodeName)];
 		};
 
 		$scope.makeGraph = function (searchItem) {
@@ -34,7 +38,7 @@
 				             	var parentMapData = _.findWhere($scope.mapData, {parent: randomNodeName});
 				             	_.each(fourLinks, function(childName) {
 				             			parentMapData.children.push(childName);
-				             			$scope.createMapData(childName);
+				             			$scope.mapData.push($scope.mapDataItem(childName));
 				             		});
 				             });
 			}
