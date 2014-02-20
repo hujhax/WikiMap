@@ -22,15 +22,6 @@
                 );
               return memo;
             }, []);
-
-            // sort pairs
-            links = _.map(links, function(pair) {
-              return pair.sort;
-            });
-
-            // eliminate duplicates
-            links = _.uniq(links);
-
           }, true);
         }
       };
