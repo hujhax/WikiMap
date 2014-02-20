@@ -75,7 +75,22 @@
 
             newNodes
               .append("ellipse")
-              .on("click", function(d, i){return scope.onClick({item: d});})
+              .on("mousedown", function(d) {
+                scope.startX=d.x; 
+                scope.startY=d.y; 
+                scope.didDrag= false;
+              })
+              .on("mousemove", function(d) {
+                if ((Math.abs(d.x - scope.startX) + Math.abs(d.y - scope.startY)) > 10) {
+                  scope.didDrag= true;
+                }
+              })
+              .on("mouseup", function(d, i){
+                if (!scope.didDrag) {
+                  return scope.onClick({item: d});
+                }
+              })
+              
               .attr("rx", 50)
               .attr("ry", 30)
 
