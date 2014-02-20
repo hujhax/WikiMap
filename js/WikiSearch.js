@@ -14,7 +14,7 @@
 		};
 		
 		$scope.createMapData = function (nodeName) {
-			$scope.mapData.push({parent: nodeName, children: []});
+			$scope.mapData= [{parent: nodeName, children: []}];
 		};
 
 		$scope.makeGraph = function (searchItem) {

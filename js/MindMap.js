@@ -64,7 +64,7 @@
 
             force.nodes(nodesInD3Format);
 
-            node = node.data(nodesInD3Format);
+            node = node.data(nodesInD3Format, function(d) { return d.name; });
 
             var newNodes = node.enter().append("g");
 
