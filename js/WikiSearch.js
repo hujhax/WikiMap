@@ -8,7 +8,6 @@
 		$scope.mapData = [];
 
 		var API = new WikipediaAPI();
-		var mindMap = new MindMap(400,400);
 
 		$scope.wikipediaSearch = function() {
 			API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
@@ -19,7 +18,6 @@
 		};
 
 		$scope.makeGraph = function (searchItem) {
-		  mindMap.init(searchItem);
 		  $scope.createMapData(searchItem);
 		};
 

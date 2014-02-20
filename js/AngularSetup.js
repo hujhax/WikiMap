@@ -5,8 +5,8 @@
   angular.module('wikiApp', ['WikiControllers', 'wikiApp.directives']);
 
   // set up dependency injection
-  // angular.module('d3', []);
+  angular.module('d3', []);
   angular.module('WikiControllers', []);
-  angular.module('wikiApp.directives', []);
+  angular.module('wikiApp.directives', ['d3']);
 
 }());
