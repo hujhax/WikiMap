@@ -22,24 +22,20 @@
 		};
 
 		$scope.expandRandomNode = function () {
-			var availableNodes = _.chain(mindMap.nodes).filter(function(obj) {return !obj.expanded;}).value();
+			var availableNodes = _.chain($scope.mapData).filter(function(obj) {return !obj.expanded;}).value();
 			if (availableNodes.length > 0) {
 				var randomNode = _.sample(availableNodes);
 				randomNode.expanded = true;
-				var randomNodeName = randomNode.name;
+				var randomNodeName = randomNode.parent;
 
 				API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
 				             function($scope, data) {
 				             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-				             	var parentIndex = mindMap.nodeNameToIndex(randomNodeName);
 				             	var parentMapData = _.findWhere($scope.mapData, {parent: randomNodeName});
 				             	_.each(fourLinks, function(childName) {
-				             			mindMap.addChild(parentIndex, childName);
 				             			parentMapData.children.push(childName);
 				             			$scope.createMapData(childName);
 				             		});
-
-								mindMap.update();
 				             });
 			}
 		};
