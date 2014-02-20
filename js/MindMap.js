@@ -113,7 +113,7 @@
           };
 
           scope.convertNodeNameToIndex = function (nodeName) {
-            return _.chain(node).pluck("__data__").indexOf(nodeName).value();
+            return _.chain(node.data()).pluck("name").indexOf(nodeName).value();
           };
         } // link
       }; // return
