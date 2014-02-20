@@ -31,24 +31,25 @@
 				var randomNode = _.sample(availableNodes);
 				randomNode.expanded = true;
 				var randomNodeName = randomNode.parent;
-
-				API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
-				             function($scope, data) {
-				             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-				             	var parentMapData = _.findWhere($scope.mapData, {parent: randomNodeName});
-				             	_.each(fourLinks, function(childName) {
-				             			parentMapData.children.push(childName);
-				             			$scope.mapData.push($scope.mapDataItem(childName));
-				             		});
-				             });
+				$scope.expandNode(randomNodeName);
 			}
 		};
 
-		$scope.clickMap = function(item){
-			console.log("O GLORIOUS DAY A CLICK");
-			console.log(item);
+		$scope.expandNode = function (nodeName) {
+			API.call($http, $scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
+			             function($scope, data) {
+			             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
+			             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});
+			             	_.each(fourLinks, function(childName) {
+			             			parentMapData.children.push(childName);
+			             			$scope.mapData.push($scope.mapDataItem(childName));
+			             		});
+			             });
 		};
 
+		$scope.clickMap = function(item){
+			$scope.expandNode(item.name);
+		};
 
 		$scope.wikipediaSearch();
 	}]);
