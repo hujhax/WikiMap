@@ -1,90 +1,138 @@
 // code that displays the basic mind map in WikiMap.
 
-function MindMap(width, height) {
-  this.didDrag = false;
+(function () {
+  'use strict';
 
-  this.svg = d3.select(".mind-map").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+  angular.module('wikiApp.directives')
+    .directive('mindMap', ['d3', function(d3) {
+      return {
+        restrict: 'EA',
+        scope: {
+          data: "=",
+          onClick: "&"
+        },
+        link: function(scope, iElement, iAttrs) {
+          scope.didDrag = false;
 
-  this.node = this.svg.selectAll(".node");
-  this.link = this.svg.selectAll(".link");
+          var svg = d3.select(iElement[0])
+            .append("svg")
+            .attr("width", 400)
+            .attr("height", 400);
 
-  this.force = d3.layout.force()
-    .charge(-1420)
-    .linkDistance(150)
-    .size([width, height]);
-};
+          var node= svg.selectAll(".node");
+          var link= svg.selectAll(".link");
 
-MindMap.prototype.init = function(startNode) {
-  this.nodes = [ {"name": startNode} ];
-  this.links = [];
-  this.update();
-}
+          var force = d3.layout.force()
+            .charge(-1420)
+            .linkDistance(150)
+            .size([400, 400]);
 
-MindMap.prototype.nodeName = function(d) {
-  return d.name;
-}
+          scope.$watch('data', function(newVals, oldVals) {
+            return scope.updateMindMap(newVals);
+          }, true);
 
-MindMap.prototype.update = function() {
-  var self= this; // for closures
+          scope.updateMindMap = function(parentData) {
+            var nodes = _.pluck(parentData, "parent");
 
-  this.force
-      .nodes(this.nodes)
-      .links(this.links)
-      .start();
+            scope.updateNodes(nodes);
 
-  this.link = this.link.data(this.links);
-  this.link
-      .enter()
-      .insert("line", ".node")  // we want the lines to go *behind* the nodes
-      .attr("class", "link");
+            var links = _.reduce(parentData, function(memo, d) {
+              memo = memo.concat(
+                  _.map(d.children, function(child) {
+                    return [d.parent, child];
+                  })
+                );
+              return memo;
+            }, []);
 
-  this.link.exit().remove();
+            scope.updateLinks(links);
 
-  this.node = this.node.data(this.nodes, this.nodeName);
+            force.start();
 
-  this.node
-      .enter()
-      .append("g")
-      .attr("class", "node")
-      .call(this.force.drag);
-      
-  this.node.exit().remove();
+            force.on("tick", function() {
+              link.attr("x1", function(d) { return d.source.x; })
+                       .attr("y1", function(d) { return d.source.y; })
+                       .attr("x2", function(d) { return d.target.x; })
+                       .attr("y2", function(d) { return d.target.y; });
 
-  this.force.start();
+              node.attr("transform", function(d) {
+               return "translate(" + d.x + "," + d.y + ")"; });
+            });
+          };
 
-  this.node.append("ellipse")
-      .attr("rx", 50)
-      .attr("ry", 30)
+          scope.updateNodes = function(nodesAsStringArray) {
+            var nodesInD3Format = _.map(nodesAsStringArray, function(string) {return {name: string};});
 
-  this.node.append("title")
-      .text(function(d) { return d.name; });
+            force.nodes(nodesInD3Format);
 
-  this.node.append("text")
-    .attr("dx", -45)
-    .attr("dy", ".35em")
-    .text(function(d) { return d.name; });
+            node = node.data(nodesInD3Format, function(d) { return d.name; });
 
-  this.force.on("tick", function() {
-    self.link.attr("x1", function(d) { return d.source.x; })
-             .attr("y1", function(d) { return d.source.y; })
-             .attr("x2", function(d) { return d.target.x; })
-             .attr("y2", function(d) { return d.target.y; });
-    
-    self.node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-  });
-}
+            var newNodes = node.enter().append("g");
 
-MindMap.prototype.addChild = function(parentIndex, childName) {
-  var childIndex = this.nodeNameToIndex(childName);
+            newNodes
+              .attr("class", "node")
+              .call(force.drag);
 
-  if (childIndex == -1) // not found!
-    childIndex = this.nodes.push({name: childName}) - 1;
+            newNodes
+              .append("ellipse")
+              .on("mousedown", function(d) {
+                scope.startX=d.x; 
+                scope.startY=d.y; 
+                scope.didDrag= false;
+              })
+              .on("mousemove", function(d) {
+                if ((Math.abs(d.x - scope.startX) + Math.abs(d.y - scope.startY)) > 10) {
+                  scope.didDrag= true;
+                }
+              })
+              .on("mouseup", function(d, i){
+                if (!scope.didDrag) {
+                  return scope.onClick({item: d});
+                }
+              })
+              
+              .attr("rx", 50)
+              .attr("ry", 30)
 
-  this.links.push({"source": childIndex, "target": parentIndex});
-}
+            newNodes
+              .append("title")
+              .text(function(d) { return d.name; });
 
-MindMap.prototype.nodeNameToIndex = function(nodeName) {
-  return _.chain(this.nodes).pluck("name").indexOf(nodeName).value();
-}
+            newNodes
+              .append("text")
+              .attr("dx", -45)
+              .attr("dy", ".35em")
+              .text(function(d) { return d.name; });
+                
+            node.exit().remove();
+          };
+
+          scope.updateLinks = function(linksAsStringPairs) {
+            var linksInD3Format = _.map(linksAsStringPairs, function (pair) {
+                return {
+                  source: scope.convertNodeNameToIndex(pair[0]),
+                  target: scope.convertNodeNameToIndex(pair[1])
+                };
+              }
+            );
+
+            force.links(linksInD3Format);
+
+            link = link.data(linksInD3Format);
+
+            link
+                .enter()
+                .insert("line", ".node")  // we want the lines to go *behind* the nodes
+                .attr("class", "link");
+
+            link.exit().remove();
+
+          };
+
+          scope.convertNodeNameToIndex = function (nodeName) {
+            return _.chain(node.data()).pluck("name").indexOf(nodeName).value();
+          };
+        } // link
+      }; // return
+    }]); // directive       
+}()); // function

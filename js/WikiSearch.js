@@ -1,38 +1,56 @@
-var wikiModule = angular.module('wikiApp', ['ngSanitize']);
+(function () {
+  'use strict';
 
-// Angular controller for app
+  angular.module('WikiControllers')
+ 	 .controller('WikiSearch', ['$scope', '$http', function($scope, $http) {
+		$scope.searchText = "Kitten";
+		$scope.wikiName = "http://en.wikipedia.org/w";
+		$scope.mapData = [];
 
-wikiModule.controller('WikiController', ['$scope', '$http', function($scope, $http) {
-	$scope.searchText = "Kitten";
-	$scope.wikiName = "http://en.wikipedia.org/w";
+		var API = new WikipediaAPI();
 
-	var API = new WikipediaAPI();
-	var mindMap = new MindMap(400,400);
+		$scope.wikipediaSearch = function() {
+			API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
+		};
+		
+		$scope.mapDataItem = function (nodeName) {
+			return {parent: nodeName, children: []};
+		};
 
-	$scope.wikipediaSearch = function() {
-		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
-	};
-	
-	$scope.makeGraph = function (searchItem) {
-	  mindMap.init(searchItem);
-	};
+		$scope.createMapData = function (nodeName) {
+			$scope.mapData= [$scope.mapDataItem(nodeName)];
+		};
 
-	$scope.expandRandomNode = function () {
-		var availableNodes = _.chain(mindMap.nodes).filter(function(obj) {return !obj.expanded;}).value();
-		if (availableNodes.length > 0) {
-			var randomNode = _.sample(availableNodes);
-			randomNode.expanded = true;
-			var randomNodeName = randomNode.name;
+		$scope.makeGraph = function (searchItem) {
+		  $scope.createMapData(searchItem);
+		};
 
-			API.call($http, $scope, "format=json&action=query&titles=", randomNodeName, "&redirects&pllimit=500&prop=links",
+		$scope.expandRandomNode = function () {
+			var availableNodes = _.chain($scope.mapData).filter(function(obj) {return !obj.expanded;}).value();
+			if (availableNodes.length > 0) {
+				var randomNode = _.sample(availableNodes);
+				randomNode.expanded = true;
+				var randomNodeName = randomNode.parent;
+				$scope.expandNode(randomNodeName);
+			}
+		};
+
+		$scope.expandNode = function (nodeName) {
+			API.call($http, $scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
 			             function($scope, data) {
 			             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-			             	var parentIndex = mindMap.nodeNameToIndex(randomNodeName);
-			             	_.each(fourLinks, function(childName) { mindMap.addChild(parentIndex, childName); });
-							mindMap.update();
+			             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});
+			             	_.each(fourLinks, function(childName) {
+			             			parentMapData.children.push(childName);
+			             			$scope.mapData.push($scope.mapDataItem(childName));
+			             		});
 			             });
-		}
-	};
+		};
 
-	$scope.wikipediaSearch();
-}]);
+		$scope.clickMap = function(item){
+			$scope.expandNode(item.name);
+		};
+
+		$scope.wikipediaSearch();
+	}]);
+}());
