@@ -47,8 +47,8 @@
 			             });
 		};
 
-		$scope.clickMap = function(item){
-			$scope.expandNode(item.name);
+		$scope.clickMap = function(clickedNode){
+			$scope.expandNode(clickedNode.name);
 		};
 
 		$scope.wikipediaSearch();

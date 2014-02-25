@@ -9,7 +9,7 @@
         restrict: 'EA',
         scope: {
           data: "=",
-          onClick: "&"
+          onClickNode: "&"
         },
         link: function(scope, iElement, iAttrs) {
           scope.didDrag = false;
@@ -87,7 +87,7 @@
               })
               .on("mouseup", function(d, i){
                 if (!scope.didDrag) {
-                  return scope.onClick({item: d});
+                  return scope.onClickNode({clickedNode: d});
                 }
               })
               
