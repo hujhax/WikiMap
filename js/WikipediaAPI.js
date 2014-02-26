@@ -8,6 +8,17 @@ angular.module('wikiApp')
 				var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 				return URL;
 			},
+			callWithScope: function($scope, preString, searchString, postString, callback) {
+				var URL = this.constructURL($scope, preString, searchString, postString);
+
+				$http.jsonp(URL).
+					success(function(data, status){
+						callback($scope, data);
+					}).
+					error(function(data, status){
+						console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
+					});
+			},
 			call: function($scope, preString, searchString, postString, callback) {
 				var URL = this.constructURL($scope, preString, searchString, postString);
 
