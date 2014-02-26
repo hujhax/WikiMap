@@ -21,9 +21,6 @@ angular.module('wikiApp')
 			},
 			searchShow: function($scope, data) {
 				$scope.searchResults = data[1];
-			},
-			linksShow: function(getRandomLinks, $scope, data) {
-				$scope.linkResults = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
 			}
 		}
 	}]);
