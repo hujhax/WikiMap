@@ -19,6 +19,9 @@ angular.module('wikiApp')
 						console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
 					});
 			},
+			search: function($scope, searchText) {
+				this.call($scope, "action=opensearch&search=", searchText, "&limit=10&namespace=0&format=json", this.searchShow);
+			},
 			searchShow: function($scope, data) {
 				$scope.searchResults = data[1];
 			}

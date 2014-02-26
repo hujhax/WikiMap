@@ -5,7 +5,7 @@ angular.module('wikiApp')
 	$scope.mapData = [];
 
 	$scope.wikipediaSearch = function() {
-		API.call($scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
+		API.search($scope, $scope.searchText);
 	};
 	
 	$scope.mapDataItem = function (nodeName) {
