@@ -1,10 +1,8 @@
 angular.module('wikiApp')
-	 .controller('WikiSearch', ['$scope', '$http', function($scope, $http) {
+	 .controller('WikiSearch', ['$scope', '$http', 'wikiAPI', function($scope, $http, API) {
 	$scope.searchText = "Kitten";
 	$scope.wikiName = "http://en.wikipedia.org/w";
 	$scope.mapData = [];
-
-	var API = new WikipediaAPI();
 
 	$scope.wikipediaSearch = function() {
 		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
