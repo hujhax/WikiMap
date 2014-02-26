@@ -1,10 +1,10 @@
 angular.module('wikiApp')
-	 .controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, API) {
+	 .controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
 	$scope.searchText = "Kitten";
 	$scope.mapData = [];
 
 	$scope.wikipediaSearch = function() {
-		API.search($scope.searchText, function (data) { $scope.searchResults = data; });
+		wikiAPI.search($scope.searchText, function (data) { $scope.searchResults = data; });
 	};
 	
 	$scope.mapDataItem = function (nodeName) {
@@ -30,7 +30,7 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandNode = function (nodeName) {
-		API.links(nodeName, _.partial($scope.expandNodeCore, nodeName));
+		wikiAPI.links(nodeName, _.partial($scope.expandNodeCore, nodeName));
 	};
 
 	// in our mapData, add four of the links from linksData as children of parentNode
