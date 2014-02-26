@@ -5,7 +5,7 @@ angular.module('wikiApp')
 	$scope.mapData = [];
 
 	$scope.wikipediaSearch = function() {
-		API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
+		API.call($scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
 	};
 	
 	$scope.mapDataItem = function (nodeName) {
@@ -31,7 +31,7 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandNode = function (nodeName) {
-		API.call($http, $scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
+		API.call($scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
 		             function($scope, data) {
 		             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
 		             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});

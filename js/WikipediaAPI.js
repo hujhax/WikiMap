@@ -1,14 +1,14 @@
 // API object for wikipedia.
 
 angular.module('wikiApp')
-	.factory("wikiAPI", function () {
+	.factory("wikiAPI", ['$http', function ($http) {
 		return {
 			constructURL: function ($scope, preString, searchString, postString) {
 				var wiki = $scope.wikiName + "/api.php?";
 				var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 				return URL;
 			},
-			call: function($http, $scope, preString, searchString, postString, callback) {
+			call: function($scope, preString, searchString, postString, callback) {
 				var URL = this.constructURL($scope, preString, searchString, postString);
 
 				$http.jsonp(URL).
@@ -29,4 +29,4 @@ angular.module('wikiApp')
 				$scope.pageText= data.parse.text['*'];
 			}
 		}
-	});
+	}]);
