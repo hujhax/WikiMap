@@ -24,9 +24,6 @@ angular.module('wikiApp')
 			},
 			linksShow: function(getRandomLinks, $scope, data) {
 				$scope.linkResults = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
-			},
-			pageShow: function($scope, data) {
-				$scope.pageText= data.parse.text['*'];
 			}
 		}
 	}]);
