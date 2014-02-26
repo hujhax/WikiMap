@@ -31,9 +31,8 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandNode = function (nodeName) {
-		API.callWithScope($scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
-		             function($scope, data) {
-		             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
+		API.links(nodeName, function(data) {
+		             	var fourLinks = _.chain(data).shuffle().first(4).value();
 		             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});
 		             	_.each(fourLinks, function(childName) {
 		             			parentMapData.children.push(childName);

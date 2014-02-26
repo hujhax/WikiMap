@@ -8,17 +8,6 @@ angular.module('wikiApp')
 				var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 				return URL;
 			},
-			callWithScope: function($scope, preString, searchString, postString, callback) {
-				var URL = this.constructURL(preString, searchString, postString);
-
-				$http.jsonp(URL).
-					success(function(data, status){
-						callback($scope, data);
-					}).
-					error(function(data, status){
-						console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
-					});
-			},
 			call: function(preString, searchString, postString, processData, callback) {
 				var URL = this.constructURL(preString, searchString, postString);
 
@@ -36,6 +25,12 @@ angular.module('wikiApp')
 			},
 			processSearchData: function(data) {
 				return data[1];
+			},
+			links: function(linksText, callback) {
+				this.call("format=json&action=query&titles=", linksText, "&redirects&pllimit=500&prop=links", this.processLinksData, callback);
+			},
+			processLinksData: function(data) {
+				return _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
 			}
 		}
 	}]);
