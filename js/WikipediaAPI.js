@@ -19,22 +19,23 @@ angular.module('wikiApp')
 						console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
 					});
 			},
-			call: function($scope, preString, searchString, postString, callback) {
+			call: function(preString, searchString, postString, processData, callback) {
 				var URL = this.constructURL(preString, searchString, postString);
 
 				$http.jsonp(URL).
 					success(function(data, status){
-						callback($scope, data);
+						data = processData(data);
+						callback(data);
 					}).
 					error(function(data, status){
 						console.log("http request failed; status = '" + status + "' and data = '" + data + "'.");
 					});
 			},
-			search: function($scope, searchText) {
-				this.call($scope, "action=opensearch&search=", searchText, "&limit=10&namespace=0&format=json", this.searchShow);
+			search: function(searchText, callback) {
+				this.call("action=opensearch&search=", searchText, "&limit=10&namespace=0&format=json", this.processSearchData, callback);
 			},
-			searchShow: function($scope, data) {
-				$scope.searchResults = data[1];
+			processSearchData: function(data) {
+				return data[1];
 			}
 		}
 	}]);
