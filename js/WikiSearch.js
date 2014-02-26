@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('WikiControllers')
+  angular.module('wikiApp')
  	 .controller('WikiSearch', ['$scope', '$http', function($scope, $http) {
 		$scope.searchText = "Kitten";
 		$scope.wikiName = "http://en.wikipedia.org/w";
