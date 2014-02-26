@@ -3,9 +3,9 @@
 (function () {
   'use strict';
 
-  angular.module('wikiApp.directives')
+  angular.module('wikiApp')
     .directive('mindMap', ['d3', function(d3) {
-      return {
+      return {  
         restrict: 'EA',
         scope: {
           data: "=",
