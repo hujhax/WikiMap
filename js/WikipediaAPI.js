@@ -5,8 +5,7 @@ angular.module('wikiApp')
 		var wiki = "http://en.wikipedia.org/w/api.php?";
 		return {
 			constructURL: function (preString, searchString, postString) {
-				var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
-				return URL;
+				return wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 			},
 			call: function(preString, searchString, postString, processData, callback) {
 				var URL = this.constructURL(preString, searchString, postString);
