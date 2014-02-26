@@ -29,7 +29,15 @@ angular.module('wikiApp')
 				this.call("format=json&action=query&titles=", linksText, "&redirects&pllimit=500&prop=links", this.processLinksData, callback);
 			},
 			processLinksData: function(data) {
-				return _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
+				var newData = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
+
+				return _.reduce(newData, function(data, topic) {
+					var splitTopic = topic.split(":");
+					var namespace = (splitTopic.length == 2) ? splitTopic[0] : "Main";
+					if (data[namespace] === undefined) data[namespace] = [];
+					data[namespace].push(_.last(splitTopic));
+					return data;
+				}, {});
 			}
 		}
 	}]);

@@ -35,7 +35,7 @@ angular.module('wikiApp')
 
 	// in our mapData, add four of the links from linksData as children of parentNode
 	$scope.expandNodeCore = function (parentNode, linksData) {
-		var fourLinks = _.chain(linksData).shuffle().first(4).value();
+		var fourLinks = _.chain(linksData.Main).shuffle().first(4).value();
 		var parentMapData = _.findWhere($scope.mapData, {parent: parentNode});
 
 		_.each(fourLinks, function(childName) {
