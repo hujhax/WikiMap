@@ -2,14 +2,14 @@
 
 angular.module('wikiApp')
 	.factory("wikiAPI", ['$http', function ($http) {
+		var wiki = "http://en.wikipedia.org/w/api.php?";
 		return {
-			constructURL: function ($scope, preString, searchString, postString) {
-				var wiki = $scope.wikiName + "/api.php?";
+			constructURL: function (preString, searchString, postString) {
 				var URL = wiki + preString + searchString + postString + "&callback=JSON_CALLBACK";
 				return URL;
 			},
 			callWithScope: function($scope, preString, searchString, postString, callback) {
-				var URL = this.constructURL($scope, preString, searchString, postString);
+				var URL = this.constructURL(preString, searchString, postString);
 
 				$http.jsonp(URL).
 					success(function(data, status){
@@ -20,7 +20,7 @@ angular.module('wikiApp')
 					});
 			},
 			call: function($scope, preString, searchString, postString, callback) {
-				var URL = this.constructURL($scope, preString, searchString, postString);
+				var URL = this.constructURL(preString, searchString, postString);
 
 				$http.jsonp(URL).
 					success(function(data, status){
