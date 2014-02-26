@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('d3')
+  angular.module('d3', [])
     .factory('d3',[function(){
       var d3;
       // d3 version 3 from http://d3js.org/d3.v3.min.js

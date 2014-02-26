@@ -1,56 +1,52 @@
-(function () {
-  'use strict';
+angular.module('wikiApp')
+	 .controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
+	$scope.searchText = "Kitten";
+	$scope.mapData = [];
 
-  angular.module('WikiControllers')
- 	 .controller('WikiSearch', ['$scope', '$http', function($scope, $http) {
-		$scope.searchText = "Kitten";
-		$scope.wikiName = "http://en.wikipedia.org/w";
-		$scope.mapData = [];
+	$scope.wikipediaSearch = function() {
+		wikiAPI.search($scope.searchText, function (data) { $scope.searchResults = data; });
+	};
+	
+	$scope.mapDataItem = function (nodeName) {
+		return {parent: nodeName, children: []};
+	};
 
-		var API = new WikipediaAPI();
+	$scope.createMapData = function (nodeName) {
+		$scope.mapData= [$scope.mapDataItem(nodeName)];
+	};
 
-		$scope.wikipediaSearch = function() {
-			API.call($http, $scope, "action=opensearch&search=", $scope.searchText, "&limit=10&namespace=0&format=json", API.searchShow);
-		};
-		
-		$scope.mapDataItem = function (nodeName) {
-			return {parent: nodeName, children: []};
-		};
+	$scope.makeGraph = function (searchItem) {
+	  $scope.createMapData(searchItem);
+	};
 
-		$scope.createMapData = function (nodeName) {
-			$scope.mapData= [$scope.mapDataItem(nodeName)];
-		};
+	$scope.expandRandomNode = function () {
+		var availableNodes = _.chain($scope.mapData).filter(function(obj) {return !obj.expanded;}).value();
+		if (availableNodes.length > 0) {
+			var randomNode = _.sample(availableNodes);
+			randomNode.expanded = true;
+			var randomNodeName = randomNode.parent;
+			$scope.expandNode(randomNodeName);
+		}
+	};
 
-		$scope.makeGraph = function (searchItem) {
-		  $scope.createMapData(searchItem);
-		};
+	$scope.expandNode = function (nodeName) {
+		wikiAPI.links(nodeName, _.partial($scope.expandNodeCore, nodeName));
+	};
 
-		$scope.expandRandomNode = function () {
-			var availableNodes = _.chain($scope.mapData).filter(function(obj) {return !obj.expanded;}).value();
-			if (availableNodes.length > 0) {
-				var randomNode = _.sample(availableNodes);
-				randomNode.expanded = true;
-				var randomNodeName = randomNode.parent;
-				$scope.expandNode(randomNodeName);
-			}
-		};
+	// in our mapData, add four of the links from linksData as children of parentNode
+	$scope.expandNodeCore = function (parentNode, linksData) {
+		var fourLinks = _.chain(linksData).shuffle().first(4).value();
+		var parentMapData = _.findWhere($scope.mapData, {parent: parentNode});
 
-		$scope.expandNode = function (nodeName) {
-			API.call($http, $scope, "format=json&action=query&titles=", nodeName, "&redirects&pllimit=500&prop=links",
-			             function($scope, data) {
-			             	var fourLinks = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").shuffle().first(4).value();
-			             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});
-			             	_.each(fourLinks, function(childName) {
-			             			parentMapData.children.push(childName);
-			             			$scope.mapData.push($scope.mapDataItem(childName));
-			             		});
-			             });
-		};
+		_.each(fourLinks, function(childName) {
+			parentMapData.children.push(childName);
+			$scope.mapData.push($scope.mapDataItem(childName));
+		});
+	};
 
-		$scope.clickMap = function(clickedNode){
-			$scope.expandNode(clickedNode.name);
-		};
+	$scope.clickMap = function(clickedNode){
+		$scope.expandNode(clickedNode.name);
+	};
 
-		$scope.wikipediaSearch();
-	}]);
-}());
+	$scope.wikipediaSearch();
+}]);
