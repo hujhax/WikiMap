@@ -31,14 +31,18 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandNode = function (nodeName) {
-		API.links(nodeName, function(data) {
-		             	var fourLinks = _.chain(data).shuffle().first(4).value();
-		             	var parentMapData = _.findWhere($scope.mapData, {parent: nodeName});
-		             	_.each(fourLinks, function(childName) {
-		             			parentMapData.children.push(childName);
-		             			$scope.mapData.push($scope.mapDataItem(childName));
-		             		});
-		             });
+		API.links(nodeName, _.partial($scope.expandNodeCore, nodeName));
+	};
+
+	// in our mapData, add four of the links from linksData as children of parentNode
+	$scope.expandNodeCore = function (parentNode, linksData) {
+		var fourLinks = _.chain(linksData).shuffle().first(4).value();
+		var parentMapData = _.findWhere($scope.mapData, {parent: parentNode});
+
+		_.each(fourLinks, function(childName) {
+			parentMapData.children.push(childName);
+			$scope.mapData.push($scope.mapDataItem(childName));
+		});
 	};
 
 	$scope.clickMap = function(clickedNode){
