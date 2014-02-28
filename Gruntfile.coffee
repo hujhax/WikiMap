@@ -73,9 +73,6 @@ module.exports = (grunt) ->
             haml:
                 files: ["./*.haml"] # watched files
                 tasks: ["haml"] # task to run on them
-            nodeunit:
-                files: ["test/*_test.js"] # watched files
-                tasks: ["nodeunit"] # task to run on them
 
     # loading all the dependencies
     grunt.loadNpmTasks 'grunt-contrib-uglify'
