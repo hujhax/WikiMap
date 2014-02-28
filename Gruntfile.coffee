@@ -55,8 +55,9 @@ module.exports = (grunt) ->
         #unit testing
         jasmine: 
               src: 'js/**/*.js' # Your project's source files
-              specs: 'specs/**/*spec.js' # Your Jasmine spec files
-              # helpers: 'specs/helpers/*.js' # Your spec helper files
+              options:
+                  specs: 'specs/**/*spec.js' # Your Jasmine spec files
+                  # helpers: 'specs/helpers/*.js' # Your spec helper files
 
         watch:
             options:
@@ -84,6 +85,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-compass'
     grunt.loadNpmTasks 'grunt-contrib-haml'
+    grunt.loadNpmTasks 'grunt-contrib-jasmine'
     grunt.loadNpmTasks 'grunt-autoprefixer'
 
     # if you type "grunt" on the command line, you get the "default" task.
@@ -92,3 +94,6 @@ module.exports = (grunt) ->
 
     # "reboot" is arbitrary name, we run clean first, then run default (above).
     grunt.registerTask "reboot", ['clean', 'default']
+
+    # test out the code
+    grunt.registerTask "test", ['jasmine']
