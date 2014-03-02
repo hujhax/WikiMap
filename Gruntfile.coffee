@@ -54,7 +54,8 @@ module.exports = (grunt) ->
 
         #unit testing
         jasmine: 
-              src: ['bower_components/jasmine/lib/jasmine-core/jasmine.js', 'bower_components/jasmine/lib/jasmine-core/jasmine-html.js',
+              src: ['./bower_components/lodash/dist/lodash.min.js','bower_components/jasmine/lib/jasmine-core/jasmine.js',
+                    'bower_components/jasmine/lib/jasmine-core/jasmine-html.js',
                     'bower_components/angular/angular.js', 'bower_components/angular-mocks/angular-mocks.js', 'js/**/*.js'] # Your project's source files
               options:
                   specs: 'specs/**/*spec.js' # Your Jasmine spec files
