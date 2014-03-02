@@ -5,9 +5,9 @@ describe("Dummy test suite", function() {
 });
 
 describe("Testing the WikiMap controller.", function() {
-    var kittenTopics = ['Kitten', 'Kittenball', 'Kitten Navidad', 'Kitten with a Whip', 
-                        'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
-                        'Kitten Kong', 'Kittens (band)']
+    var fakeSearchResults = ['Kitten', 'Kittenball', 'Kitten Navidad', 'Kitten with a Whip', 
+                             'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
+                             'Kitten Kong', 'Kittens (band)'];
 
     // create a mock app module
     beforeEach(module('wikiApp'));  
@@ -15,7 +15,7 @@ describe("Testing the WikiMap controller.", function() {
     // create a mock wikiAPI service
     beforeEach(module(function ($provide) {
      var mockWikiAPI = $provide.value('wikiAPI', { 
-         search: function(text, callback) {callback(kittenTopics);}
+         search: function(text, callback) {callback(fakeSearchResults);}
      });
    	}));
 
@@ -34,6 +34,6 @@ describe("Testing the WikiMap controller.", function() {
     });
 
     it ("Search results should be provided by the wikiAPI.", function () {
-        expect(scope.searchResults).toBe(kittenTopics);
+        expect(scope.searchResults).toBe(fakeSearchResults);
     });
 });
