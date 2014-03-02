@@ -68,6 +68,10 @@ describe("Testing the MediaWiki API service.", function() {
 
   // create the service
   it("The wikiAPI shouldn't be null.", function () {
-      expect(wikiAPI).not.toEqual(null);
+    expect(wikiAPI).not.toEqual(null);
+  });
+
+  it("The URL constructor should behave predictably.", function () {
+    expect(wikiAPI.constructURL('foo', 'bar', 'baz')).toBe("http://en.wikipedia.org/w/api.php?foobarbaz&callback=JSON_CALLBACK");
   });
 });
