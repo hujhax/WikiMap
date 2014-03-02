@@ -1,5 +1,6 @@
 angular.module('wikiApp')
-	 .controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
+		.controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
+
 	$scope.searchText = "Kitten";
 	$scope.mapData = [];
 
@@ -16,7 +17,7 @@ angular.module('wikiApp')
 	};
 
 	$scope.makeGraph = function (searchItem) {
-	  $scope.createMapData(searchItem);
+		$scope.createMapData(searchItem);
 	};
 
 	$scope.expandRandomNode = function () {

@@ -54,9 +54,11 @@ module.exports = (grunt) ->
 
         #unit testing
         jasmine: 
-              src: 'js/**/*.js' # Your project's source files
-              specs: 'specs/**/*spec.js' # Your Jasmine spec files
-              # helpers: 'specs/helpers/*.js' # Your spec helper files
+              src: ['bower_components/jasmine/lib/jasmine-core/jasmine.js', 'bower_components/jasmine/lib/jasmine-core/jasmine-html.js',
+                    'bower_components/angular/angular.js', 'bower_components/angular-mocks/angular-mocks.js', 'js/**/*.js'] # Your project's source files
+              options:
+                  specs: 'specs/**/*spec.js' # Your Jasmine spec files
+                  # helpers: 'specs/helpers/*.js' # Your spec helper files
 
         watch:
             options:
@@ -73,9 +75,6 @@ module.exports = (grunt) ->
             haml:
                 files: ["./*.haml"] # watched files
                 tasks: ["haml"] # task to run on them
-            nodeunit:
-                files: ["test/*_test.js"] # watched files
-                tasks: ["nodeunit"] # task to run on them
 
     # loading all the dependencies
     grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -87,6 +86,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-compass'
     grunt.loadNpmTasks 'grunt-contrib-haml'
+    grunt.loadNpmTasks 'grunt-contrib-jasmine'
     grunt.loadNpmTasks 'grunt-autoprefixer'
 
     # if you type "grunt" on the command line, you get the "default" task.
@@ -95,3 +95,6 @@ module.exports = (grunt) ->
 
     # "reboot" is arbitrary name, we run clean first, then run default (above).
     grunt.registerTask "reboot", ['clean', 'default']
+
+    # test out the code
+    grunt.registerTask "test", ['jasmine']

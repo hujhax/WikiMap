@@ -89,7 +89,7 @@ angular.module('wikiApp')
             })
             
             .attr("rx", 50)
-            .attr("ry", 30)
+            .attr("ry", 30);
 
           newNodes
             .append("title")
