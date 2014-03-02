@@ -25,7 +25,7 @@ describe("Testing the WikiMap controller", function() {
             });
         }));
  
-        it("Default search text should be 'kitten'", function() {
+        it("Default search text should be 'Kitten'.", function() {
             expect(scope.searchText).toBe("Kitten");
         });
     });
