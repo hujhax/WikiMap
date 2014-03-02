@@ -17,7 +17,7 @@ describe("Testing the WikiMap controller.", function() {
 
   // create a mock wikiAPI service
   beforeEach(module(function ($provide) {
-   var mockWikiAPI = $provide.value('wikiAPI', { 
+    var mockWikiAPI = $provide.value('wikiAPI', { 
        search: function(text, callback) {callback(fakeSearchResults);},
        links: function(text, callback) {callback(fakeLinkResults);}
     });
@@ -66,9 +66,29 @@ describe("Testing the MediaWiki API service.", function() {
   beforeEach(inject(function($injector) {
     $httpBackend = $injector.get('$httpBackend');
 
+    var completeSearchData = ["Kitten", fakeSearchResults];
+
     $httpBackend.whenJSONP("http://en.wikipedia.org/w/api.php?action=opensearch&search=Kitten&limit=10&namespace=0&format=json&callback=JSON_CALLBACK")
-      .respond(["Kitten", fakeSearchResults]); 
-   }));
+      .respond(completeSearchData); 
+
+    var completeLinksData = {
+      query: {
+        pages: {
+          66365: {
+            pageid: 66365,
+            ns: 0,
+            title: "Kitten",
+            links: _.map(fakeLinkResults.Main, function(string) { 
+              return {ns: 0, title: string};
+            })
+          }
+        }
+      }
+    };
+
+    $httpBackend.whenJSONP("http://en.wikipedia.org/w/api.php?format=json&action=query&titles=Kitten&redirects&pllimit=500&prop=links&callback=JSON_CALLBACK")
+      .respond(completeLinksData);
+  }));
 
   afterEach(function() {
     $httpBackend.verifyNoOutstandingExpectation();
@@ -89,10 +109,17 @@ describe("Testing the MediaWiki API service.", function() {
     expect(wikiAPI.constructURL('foo', 'bar', 'baz')).toBe("http://en.wikipedia.org/w/api.php?foobarbaz&callback=JSON_CALLBACK");
   });
 
-  it("The search function should work.", function () {
+  it("The search function should return search data.", function () {
     var results;
     wikiAPI.search("Kitten", function (data) {results = data;});
     $httpBackend.flush();
     expect(results).toEqual(fakeSearchResults);
+  });
+
+  it("The links function should return link data.", function () {
+    var results;
+    wikiAPI.links("Kitten", function (data) {results = data;});
+    $httpBackend.flush();
+    expect(results).toEqual(fakeLinkResults);
   });
 });
