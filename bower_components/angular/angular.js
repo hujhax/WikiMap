@@ -6836,14 +6836,8 @@ function $ControllerProvider() {
 
       if(isString(expression)) {
         match = expression.match(CNTRL_REG),
-        console.log(match);
         constructor = match[1],
-        console.log(constructor);
         identifier = match[3];
-        console.log(controllers);
-        console.log(controllers.hasOwnProperty(constructor));
-        console.log(getter(locals.$scope, constructor, true));
-        console.log(getter($window, constructor, true));
         expression = controllers.hasOwnProperty(constructor)
             ? controllers[constructor]
             : getter(locals.$scope, constructor, true) || getter($window, constructor, true);
