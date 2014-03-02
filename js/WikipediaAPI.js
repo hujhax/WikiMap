@@ -39,5 +39,5 @@ angular.module('wikiApp')
 					return data;
 				}, {});
 			}
-		}
+		};
 	}]);
