@@ -36,4 +36,9 @@ describe("Testing the WikiMap controller.", function() {
     it ("Search results should be provided by the wikiAPI.", function () {
         expect(scope.searchResults).toBe(fakeSearchResults);
     });
+
+    it ("We should be able to create single-node map data.", function () {
+      scope.createMapData("Kitten");
+      expect(scope.mapData).toEqual([{parent: "Kitten", children: []}]); // arrays require toEqual
+    });
 });
