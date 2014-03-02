@@ -54,3 +54,20 @@ describe("Testing the WikiMap controller.", function() {
     expect(_.chain(scope.mapData).pluck("children").flatten().sortBy().value()).toEqual(_.sortBy(fakeLinkResults.Main));
   });
 });
+
+describe("Testing the MediaWiki API service.", function() {
+  var wikiAPI;
+
+  // create a mock app module
+  beforeEach(module('wikiApp')); 
+
+  // Set up the mock http service responses
+  beforeEach(inject(function($injector) {
+    wikiAPI = $injector.get('wikiAPI');
+  }));
+
+  // create the service
+  it("The wikiAPI shouldn't be null.", function () {
+      expect(wikiAPI).not.toEqual(null);
+  });
+});
