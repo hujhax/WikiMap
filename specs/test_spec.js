@@ -21,7 +21,7 @@ describe("Testing the WikiMap controller.", function() {
        search: function(text, callback) {callback(fakeSearchResults);},
        links: function(text, callback) {callback(fakeLinkResults);}
     });
- 	}));
+  }));
 
   // create the controller
   var scope;
@@ -57,12 +57,25 @@ describe("Testing the WikiMap controller.", function() {
 });
 
 describe("Testing the MediaWiki API service.", function() {
-  var wikiAPI;
+  var wikiAPI, $httpbackend;
 
   // create a mock app module
   beforeEach(module('wikiApp')); 
 
-  // Set up the mock http service responses
+  // set up the mock http service
+  beforeEach(inject(function($injector) {
+    $httpBackend = $injector.get('$httpBackend');
+
+    $httpBackend.whenJSONP("http://en.wikipedia.org/w/api.php?action=opensearch&search=Kitten&limit=10&namespace=0&format=json&callback=JSON_CALLBACK")
+      .respond(["Kitten", fakeSearchResults]); 
+   }));
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
+  // set up the wikiAPI service
   beforeEach(inject(function($injector) {
     wikiAPI = $injector.get('wikiAPI');
   }));
@@ -74,5 +87,12 @@ describe("Testing the MediaWiki API service.", function() {
 
   it("The URL constructor should behave predictably.", function () {
     expect(wikiAPI.constructURL('foo', 'bar', 'baz')).toBe("http://en.wikipedia.org/w/api.php?foobarbaz&callback=JSON_CALLBACK");
+  });
+
+  it("The search function should work.", function () {
+    var results;
+    wikiAPI.search("Kitten", function (data) {results = data;});
+    $httpBackend.flush();
+    expect(results).toEqual(fakeSearchResults);
   });
 });
