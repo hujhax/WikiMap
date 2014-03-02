@@ -19,22 +19,21 @@ describe("Testing the WikiMap controller.", function() {
      });
    	}));
 
-    // test the controller
-    describe("WikiSearch", function() {
-        var scope;
-        beforeEach(inject(function($rootScope, $controller) {
-            scope = $rootScope.$new();
-            $controller("WikiSearch", { 
-                $scope: scope
-            });
-        }));
- 
-        it("Default search text should be 'Kitten'.", function() {
-            expect(scope.searchText).toBe("Kitten");
+    // create the controller
+    var scope;
+    beforeEach(inject(function($rootScope, $controller) {
+        scope = $rootScope.$new();
+        $controller("WikiSearch", { 
+            $scope: scope
         });
+    }));
 
-        it ("Search results should be provided by the wikiAPI.", function () {
-            expect(scope.searchResults).toBe(kittenTopics);
-        });
+    // verify its behavior
+    it("Default search text should be 'Kitten'.", function() {
+        expect(scope.searchText).toBe("Kitten");
+    });
+
+    it ("Search results should be provided by the wikiAPI.", function () {
+        expect(scope.searchResults).toBe(kittenTopics);
     });
 });
