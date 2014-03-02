@@ -50,5 +50,7 @@ describe("Testing the WikiMap controller.", function() {
       scope.expandNode("Kitten");
 
       expect(scope.mapData.length).toBe(5);
+      expect(_.chain(scope.mapData).pluck("parent").sortBy().value()).toEqual(_.sortBy(fakeLinkResults.Main.concat("Kitten")));
+      expect(_.chain(scope.mapData).pluck("children").flatten().sortBy().value()).toEqual(_.sortBy(fakeLinkResults.Main));
     });
 });
