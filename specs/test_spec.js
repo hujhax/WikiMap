@@ -4,13 +4,14 @@ describe("Dummy test suite", function() {
   });
 });
 
+
+var fakeSearchResults = ['Kitten', 'Kittenball', 'Kitten Navidad', 'Kitten with a Whip', 
+                         'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
+                         'Kitten Kong', 'Kittens (band)'];
+
+var fakeLinkResults = { Main: ['Amnion', 'Donksoy', 'Persian', 'Governing Council of the Cat Fancy']};
+
 describe("Testing the WikiMap controller.", function() {
-  var fakeSearchResults = ['Kitten', 'Kittenball', 'Kitten Navidad', 'Kitten with a Whip', 
-                           'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
-                           'Kitten Kong', 'Kittens (band)'];
-
-  var fakeLinkResults = { Main: ['Amnion', 'Donksoy', 'Persian', 'Governing Council of the Cat Fancy']};
-
   // create a mock app module
   beforeEach(module('wikiApp'));  
 
