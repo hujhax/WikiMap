@@ -4,14 +4,18 @@ describe("Dummy test suite", function() {
   });
 });
 
-describe("Testing the WikiMap controller", function() {
+describe("Testing the WikiMap controller.", function() {
+    var kittenTopics = ['Kitten', 'Kittenball', 'Kitten Navidad', 'Kitten with a Whip', 
+                        'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
+                        'Kitten Kong', 'Kittens (band)']
+
     // create a mock app module
     beforeEach(module('wikiApp'));  
  
     // create a mock wikiAPI service
     beforeEach(module(function ($provide) {
      var mockWikiAPI = $provide.value('wikiAPI', { 
-         search: function() {return ['Kitten']}
+         search: function(text, callback) {callback(kittenTopics);}
      });
    	}));
 
@@ -27,6 +31,10 @@ describe("Testing the WikiMap controller", function() {
  
         it("Default search text should be 'Kitten'.", function() {
             expect(scope.searchText).toBe("Kitten");
+        });
+
+        it ("Search results should be provided by the wikiAPI.", function () {
+            expect(scope.searchResults).toBe(kittenTopics);
         });
     });
 });
