@@ -9,13 +9,16 @@ describe("Testing the WikiMap controller.", function() {
                              'Kitten\'s Joy', 'Kittenpants', 'Kittens Reichert', 'Kitten heel',
                              'Kitten Kong', 'Kittens (band)'];
 
+    var fakeLinkResults = { Main: ['Amnion', 'Donksoy', 'Persian', 'Governing Council of the Cat Fancy']};
+
     // create a mock app module
     beforeEach(module('wikiApp'));  
  
     // create a mock wikiAPI service
     beforeEach(module(function ($provide) {
      var mockWikiAPI = $provide.value('wikiAPI', { 
-         search: function(text, callback) {callback(fakeSearchResults);}
+         search: function(text, callback) {callback(fakeSearchResults);},
+         links: function(text, callback) {callback(fakeLinkResults);}
      });
    	}));
 
@@ -40,5 +43,12 @@ describe("Testing the WikiMap controller.", function() {
     it ("We should be able to create single-node map data.", function () {
       scope.createMapData("Kitten");
       expect(scope.mapData).toEqual([{parent: "Kitten", children: []}]); // arrays require toEqual
+    });
+
+    it ("We should be able to expand a node.", function () {
+      scope.createMapData("Kitten");
+      scope.expandNode("Kitten");
+
+      expect(scope.mapData.length).toBe(5);
     });
 });
