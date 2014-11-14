@@ -11,10 +11,13 @@ angular.module('wikiApp')
       link: function(scope, iElement, iAttrs) {
         scope.didDrag = false;
 
+        var mapHeight = $(window).height() - 250;
+        var mapWidth = $(window).width();
+
         var svg = d3.select(iElement[0])
           .append("svg")
-          .attr("width", 400)
-          .attr("height", 400);
+          .attr("width", mapWidth)
+          .attr("height", mapHeight);
 
         var node= svg.selectAll(".node");
         var link= svg.selectAll(".link");
@@ -22,7 +25,7 @@ angular.module('wikiApp')
         var force = d3.layout.force()
           .charge(-1420)
           .linkDistance(150)
-          .size([400, 400]);
+          .size([mapWidth, mapHeight]);
 
         scope.$watch('data', function(newVals, oldVals) {
           return scope.updateMindMap(newVals);
