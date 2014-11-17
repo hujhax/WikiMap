@@ -34,15 +34,13 @@ angular.module('wikiApp')
 		wikiAPI.links(nodeName, _.partial($scope.expandNodeCore, nodeName));
 	};
 
-	// in our mapData, add four of the links from linksData as children of parentNode
+	// in our mapData, add one of the links from linksData as a child of parentNode
 	$scope.expandNodeCore = function (parentNode, linksData) {
-		var fourLinks = _.chain(linksData.Main).shuffle().first(4).value();
+		var childName = _.chain(linksData.Main).shuffle().first().value();
 		var parentMapData = _.findWhere($scope.mapData, {parent: parentNode});
 
-		_.each(fourLinks, function(childName) {
-			parentMapData.children.push(childName);
-			$scope.mapData.push($scope.mapDataItem(childName));
-		});
+		parentMapData.children.push(childName);
+		$scope.mapData.push($scope.mapDataItem(childName));
 	};
 
 	$scope.clickMap = function(clickedNode){
