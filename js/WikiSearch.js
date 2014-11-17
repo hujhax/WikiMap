@@ -36,11 +36,13 @@ angular.module('wikiApp')
 
 	// in our mapData, add one of the links from linksData as a child of parentNode
 	$scope.expandNodeCore = function (parentNode, linksData) {
-		var childName = _.chain(linksData.Main).shuffle().first().value();
 		var parentMapData = _.findWhere($scope.mapData, {parent: parentNode});
+		var childName = _(linksData.Main).difference(parentMapData.children).shuffle().first();
 
-		parentMapData.children.push(childName);
-		$scope.mapData.push($scope.mapDataItem(childName));
+		if (childName) {
+			parentMapData.children.push(childName);
+			$scope.mapData.push($scope.mapDataItem(childName));
+		}
 	};
 
 	$scope.clickMap = function(clickedNode){
