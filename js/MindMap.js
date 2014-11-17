@@ -64,7 +64,15 @@ angular.module('wikiApp')
           var oldNodes = force.nodes();
           var nodesInD3Format = _.map(nodesAsStringArray, function(string) {
             var existingNode = _.find(oldNodes, {name: string});
-            return (existingNode) ? existingNode : {name: string};
+            if (existingNode) {
+              return existingNode;
+            }
+            else if (oldNodes.length == 1) {
+              return {name: string, x: 300, y: 300};  // hack to fix "second node streaks in from infinity"
+            }
+            else {
+              return {name: string};
+            }
           });
 
           force.nodes(nodesInD3Format);
