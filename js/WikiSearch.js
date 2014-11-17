@@ -21,7 +21,7 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandRandomNode = function () {
-		var availableNodes = _.chain($scope.mapData).filter(function(obj) {return !obj.expanded;}).value();
+		var availableNodes = $scope.mapData;
 		if (availableNodes.length > 0) {
 			var randomNode = _.sample(availableNodes);
 			randomNode.expanded = true;
