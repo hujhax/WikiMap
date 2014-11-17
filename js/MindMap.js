@@ -61,7 +61,11 @@ angular.module('wikiApp')
         };
 
         scope.updateNodes = function(nodesAsStringArray) {
-          var nodesInD3Format = _.map(nodesAsStringArray, function(string) {return {name: string};});
+          var oldNodes = force.nodes();
+          var nodesInD3Format = _.map(nodesAsStringArray, function(string) {
+            var existingNode = _.find(oldNodes, {name: string});
+            return (existingNode) ? existingNode : {name: string};
+          });
 
           force.nodes(nodesInD3Format);
 
