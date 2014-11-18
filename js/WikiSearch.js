@@ -49,5 +49,9 @@ angular.module('wikiApp')
 		$scope.expandNode(clickedNode.name);
 	};
 
+	$scope.openArticle = function(clickedNode){
+		wikiAPI.getArticleURL(clickedNode.name, function (articleURL) { window.open(articleURL); });
+	};
+
 	$scope.wikipediaSearch();
 }]);
