@@ -15,15 +15,22 @@
       %script{:src => "./js/MindMap.js"}
       %link{:href => "css/app.css", :rel => "stylesheet"}
       %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css", :rel => "stylesheet"}
-  %body{"ng-app" => "wikiApp"}
-    %div{"ng-controller" => "WikiSearch"}
-      %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText"}/
-      / ng-change="textChange()"
-      %input{:hidden => "", "ng-model" => "wikiName", :value => "http://en.wikipedia.org/w"}/
-      %ul
-        %li{"ng-repeat" => "searchItem in searchResults"}
-          %a{:href => "#"}
-            %p{"ng-click" => "makeGraph(searchItem)"} {{searchItem}}
-      %button{"ng-click" => "expandRandomNode()"}
-        Expand a Random Node
-      %mind-map{:data => "mapData", "on-click-node" => "clickMap(clickedNode)"} 
+  %body{"ng-app" => "wikiApp", "ng-controller" => "WikiSearch"}
+    %div{"class" => "instructions"}
+      %h1 WikiMap
+      %p{"class" => "lead"} This page builds mind-maps of wikipedia!
+      %p Start by typing something into the searchbox and clicking a start topic from the list of links.
+      %p That topic will float onscreen as a single node.
+      %p Try clicking on that node to expand it.
+      %p A linked node will show up, corresponding to a random link from that article.
+      %div
+        %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText"}/
+        / ng-change="textChange()"
+        %input{:hidden => "", "ng-model" => "wikiName", :value => "http://en.wikipedia.org/w"}/
+        %ul
+          %li{"ng-repeat" => "searchItem in searchResults"}
+            %a{:href => "#"}
+              %p{"ng-click" => "makeGraph(searchItem)"} {{searchItem}}
+        %button{"ng-click" => "expandRandomNode()"}
+          Expand a Random Node
+    %mind-map{:data => "mapData", "on-click-node" => "clickMap(clickedNode)"} 
