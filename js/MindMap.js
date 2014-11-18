@@ -11,13 +11,14 @@ angular.module('wikiApp')
       link: function(scope, iElement, iAttrs) {
         scope.didDrag = false;
 
-        var mapHeight = $(window).height() - 250;
-        var mapWidth = $(window).width();
+        var mapHeight = $(window).height() - 50;
+        var mapWidth = $(window).width() - 20;
 
         var svg = d3.select(iElement[0])
           .append("svg")
           .attr("width", mapWidth)
-          .attr("height", mapHeight);
+          .attr("height", mapHeight)
+          .attr("style", "background: #f5f5f5")
 
         var node= svg.selectAll(".node");
         var link= svg.selectAll(".link");
@@ -116,7 +117,7 @@ angular.module('wikiApp')
             .attr("width", function(d) {
               return Math.max(this.parentElement.getBBox().width + 10, 60);
             })
-            .attr("style", "fill: #eee")
+            .attr("style", "fill: #fee")
             .attr("height", 50)
             .attr("rx", 20)
             .attr("ry", 20)
