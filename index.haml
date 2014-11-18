@@ -25,9 +25,7 @@
       %p A linked node will show up, corresponding to a random link from that article.
       %p Shift-click a node to see the corresponding article on the wiki.
       %div
-        %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText"}/
-        / ng-change="textChange()"
-        %input{:hidden => "", "ng-model" => "wikiName", :value => "http://en.wikipedia.org/w"}/
+        %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText", "placeholder" => "Search"}
         %ul
           %li{"ng-repeat" => "searchItem in searchResults"}
             %a{:href => "#"}

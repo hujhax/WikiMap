@@ -1,7 +1,7 @@
 angular.module('wikiApp')
 		.controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
 
-	$scope.searchText = "Kitten";
+	$scope.searchText = "";
 	$scope.mapData = [];
 
 	$scope.wikipediaSearch = function() {
