@@ -44,6 +44,9 @@ angular.module('wikiApp')
 			},
 			processArticleURLData: function(data) {
 				return _(data.query.pages).values().first().fullurl;
+			},
+			setWiki: function(baseURL) {
+				wiki = baseURL;
 			}
 		};
 	}]);
