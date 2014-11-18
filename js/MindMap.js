@@ -17,8 +17,7 @@ angular.module('wikiApp')
         var svg = d3.select(iElement[0])
           .append("svg")
           .attr("width", mapWidth)
-          .attr("height", mapHeight)
-          .attr("style", "background: #f5f5f5")
+          .attr("height", mapHeight);
 
         var node= svg.selectAll(".node");
         var link= svg.selectAll(".link");

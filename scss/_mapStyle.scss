@@ -6,6 +6,10 @@
 input, textarea {
   -webkit-user-select:text;
 }
+svg {
+  background: #f5f5f5;
+}
+
 body {
   background-color:white;
   color:black;
@@ -28,7 +32,6 @@ body {
   fill: black;
   stroke: black;
 }
-
 ul {
   line-height: .4em;
   padding-top: .5em;
