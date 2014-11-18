@@ -6,7 +6,8 @@ angular.module('wikiApp')
       restrict: 'EA',
       scope: {
         data: "=",
-        onClickNode: "&"
+        onClickNode: "&",
+        onShiftClickNode: "&"
       },
       link: function(scope, iElement, iAttrs) {
         scope.didDrag = false;
@@ -17,8 +18,7 @@ angular.module('wikiApp')
         var svg = d3.select(iElement[0])
           .append("svg")
           .attr("width", mapWidth)
-          .attr("height", mapHeight)
-          .attr("style", "background: #f5f5f5")
+          .attr("height", mapHeight);
 
         var node= svg.selectAll(".node");
         var link= svg.selectAll(".link");
@@ -110,7 +110,12 @@ angular.module('wikiApp')
             })
             .on("mouseup", function(d, i){
               if (!scope.didDrag) {
-                return scope.onClickNode({clickedNode: d});
+                if (d3.event.shiftKey) {
+                  return scope.onShiftClickNode({clickedNode: d});
+                }
+                else {
+                  return scope.onClickNode({clickedNode: d}); 
+                }
               }
             })
             

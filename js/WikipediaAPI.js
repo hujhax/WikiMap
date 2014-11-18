@@ -38,6 +38,12 @@ angular.module('wikiApp')
 					data[namespace].push(_.last(splitTopic));
 					return data;
 				}, {});
+			},
+			getArticleURL: function(articleTitle, callback) {
+				this.call("format=json&action=query&prop=info&inprop=url&titles=", articleTitle, "", this.processArticleURLData, callback);
+			},
+			processArticleURLData: function(data) {
+				return _(data.query.pages).values().first().fullurl;
 			}
 		};
 	}]);
