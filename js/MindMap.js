@@ -24,7 +24,7 @@ angular.module('wikiApp')
 
         var force = d3.layout.force()
           .charge(-1420)
-          .linkDistance(150)
+          .linkDistance(200)
           .size([mapWidth, mapHeight]);
 
         scope.$watch('data', function(newVals, oldVals) {
@@ -86,7 +86,17 @@ angular.module('wikiApp')
             .call(force.drag);
 
           newNodes
-            .append("ellipse")
+            .append("title")
+            .text(function(d) { return d.name; });
+
+          newNodes
+            .append("text")
+            .attr("dx", -45)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name; });
+              
+          newNodes
+            .insert("rect", "text")
             .on("mousedown", function(d) {
               scope.startX=d.x; 
               scope.startY=d.y; 
@@ -103,19 +113,15 @@ angular.module('wikiApp')
               }
             })
             
-            .attr("rx", 50)
-            .attr("ry", 30);
+            .attr("width", function(d) {
+              return Math.max(this.parentElement.getBBox().width + 10, 60);
+            })
+            .attr("style", "fill: #eee")
+            .attr("height", 50)
+            .attr("rx", 20)
+            .attr("ry", 20)
+            .attr("transform", "translate(-50,-20)");
 
-          newNodes
-            .append("title")
-            .text(function(d) { return d.name; });
-
-          newNodes
-            .append("text")
-            .attr("dx", -45)
-            .attr("dy", ".35em")
-            .text(function(d) { return d.name; });
-              
           node.exit().remove();
         };
 
