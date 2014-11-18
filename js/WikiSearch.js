@@ -1,12 +1,18 @@
 angular.module('wikiApp')
 		.controller('WikiSearch', ['$scope', 'wikiAPI', function($scope, wikiAPI) {
 
-	$scope.searchText = "Kitten";
+	$scope.searchText = "";
+	$scope.curWiki = "http://en.wikipedia.org/w/api.php?";
 	$scope.mapData = [];
 
 	$scope.wikipediaSearch = function() {
 		wikiAPI.search($scope.searchText, function (data) { $scope.searchResults = data; });
 	};
+
+	$scope.resetWiki = function() {
+		wikiAPI.setWiki($scope.curWiki);
+		$scope.wikipediaSearch();
+	}
 	
 	$scope.mapDataItem = function (nodeName) {
 		return {parent: nodeName, children: []};
