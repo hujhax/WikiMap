@@ -23,7 +23,7 @@
       %p That topic will float onscreen as a single node.
       %p Try clicking on that node to expand it.
       %p A linked node will show up, corresponding to a random link from that article.
-      %p Shift-click a node to see the corresponding article on the wiki.
+      %p Double-click a node to see the corresponding article on the wiki.
       %p (Note: you'll probably have to "allow popups" in your browser for this to work.)
       %div
         %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText", "placeholder" => "Search"}
@@ -40,4 +40,4 @@
         %p
           %button{"ng-click" => "expandRandomNode()"}
             Expand a Random Node
-    %mind-map{:data => "mapData", "on-click-node" => "clickMap(clickedNode)", "on-shift-click-node" => "openArticle(clickedNode)"} 
+    %mind-map{:data => "mapData", "on-click-node" => "clickMap(clickedNode)", "on-double-click-node" => "openArticle(clickedNode)"} 

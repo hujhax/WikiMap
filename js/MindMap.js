@@ -7,10 +7,12 @@ angular.module('wikiApp')
       scope: {
         data: "=",
         onClickNode: "&",
-        onShiftClickNode: "&"
+        onDoubleClickNode: "&"
       },
       link: function(scope, iElement, iAttrs) {
         scope.didDrag = false;
+        scope.awaitingDoubleClick = false;
+        scope.clickTimer = null;
 
         var mapHeight = $(window).height() - 50;
         var mapWidth = $(window).width() - 20;
@@ -110,11 +112,17 @@ angular.module('wikiApp')
             })
             .on("mouseup", function(d, i){
               if (!scope.didDrag) {
-                if (d3.event.shiftKey) {
-                  return scope.onShiftClickNode({clickedNode: d});
+                if (scope.awaitingDoubleClick) {
+                  scope.awaitingDoubleClick = false;  
+                  clearTimeout(scope.clickTimer);
+                  scope.onDoubleClickNode({clickedNode: d});                
                 }
                 else {
-                  return scope.onClickNode({clickedNode: d}); 
+                  scope.awaitingDoubleClick = true;
+                  scope.clickTimer =setTimeout(function() {
+                    scope.awaitingDoubleClick = false;
+                    scope.onClickNode({clickedNode: d}); 
+                  }, 250);
                 }
               }
             })
