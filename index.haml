@@ -2,7 +2,7 @@
 / HTML5 doctype
 %html
   %head
-    %title WikiMap
+    %title WikiMap: A Toy That Maps Wikipedia
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-type"}
       %script{:src => "./bower_components/lodash/dist/lodash.min.js"}
       %script{:src => "./bower_components/angular/angular.min.js"}
@@ -24,6 +24,7 @@
       %p Try clicking on that node to expand it.
       %p A linked node will show up, corresponding to a random link from that article.
       %p Shift-click a node to see the corresponding article on the wiki.
+      %p (Note: you'll probably have to "allow popups" in your browser for this to work.)
       %div
         %input#ng-test-text{"ng-change" => "wikipediaSearch()", "ng-model" => "searchText", "placeholder" => "Search"}
         %ul
