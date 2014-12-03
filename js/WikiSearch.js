@@ -46,8 +46,16 @@ angular.module('wikiApp')
 		var childName = _(linksData.Main).difference(parentMapData.children).shuffle().first();
 
 		if (childName) {
-			parentMapData.children.push(childName);
-			$scope.mapData.push($scope.mapDataItem(childName));
+			var childMapData = _.findWhere($scope.mapData, {parent: childName});
+			if (childMapData) {
+				if (!_.contains(childMapData.children, parentNode)) {
+					parentMapData.children.push(childName);
+				}
+			}
+			else {
+				parentMapData.children.push(childName);
+				$scope.mapData.push($scope.mapDataItem(childName));
+			}
 		}
 	};
 
