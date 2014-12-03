@@ -15,7 +15,7 @@ angular.module('wikiApp')
 	}
 	
 	$scope.mapDataItem = function (nodeName) {
-		return {parent: nodeName, children: []};
+		return {parent: nodeName, children: [], exhausted: false};
 	};
 
 	$scope.createMapData = function (nodeName) {
@@ -27,7 +27,7 @@ angular.module('wikiApp')
 	};
 
 	$scope.expandRandomNode = function () {
-		var availableNodes = $scope.mapData;
+		var availableNodes = _.where($scope.mapData, {exhausted: false});
 		if (availableNodes.length > 0) {
 			var randomNode = _.sample(availableNodes);
 			randomNode.expanded = true;
@@ -48,7 +48,11 @@ angular.module('wikiApp')
 		if (childName) {
 			var childMapData = _.findWhere($scope.mapData, {parent: childName});
 			if (childMapData) {
-				if (!_.contains(childMapData.children, parentNode)) {
+				if (_.contains(childMapData.children, parentNode)) { // if that link already exists
+					linksData.Main = _.without(linksData.Main, childName); // pick one of the other links
+					$scope.expandNodeCore(parentNode, linksData); 
+				}
+				else {
 					parentMapData.children.push(childName);
 				}
 			}
@@ -56,6 +60,9 @@ angular.module('wikiApp')
 				parentMapData.children.push(childName);
 				$scope.mapData.push($scope.mapDataItem(childName));
 			}
+		}
+		else {
+			parentMapData.exhausted = true;
 		}
 	};
 

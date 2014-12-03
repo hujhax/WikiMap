@@ -35,9 +35,7 @@ angular.module('wikiApp')
         }, true);
 
         scope.updateMindMap = function(parentData) {
-          var nodes = _.pluck(parentData, "parent");
-
-          scope.updateNodes(nodes);
+          scope.updateNodes(parentData);
 
           var links = _.reduce(parentData, function(memo, d) {
             memo = memo.concat(
@@ -60,21 +58,26 @@ angular.module('wikiApp')
 
             node.attr("transform", function(d) {
              return "translate(" + d.x + "," + d.y + ")"; });
+            node.attr("style", function(d) { 
+              return "fill: #" + ((d.exhausted) ? "ddd" : "fee");
+            });
           });
         };
 
-        scope.updateNodes = function(nodesAsStringArray) {
+        scope.updateNodes = function(parentData) {
           var oldNodes = force.nodes();
-          var nodesInD3Format = _.map(nodesAsStringArray, function(string) {
-            var existingNode = _.find(oldNodes, {name: string});
+          var nodesInD3Format = _.map(parentData, function(parentItem) {
+            var nodeName = parentItem.parent;
+            var existingNode = _.find(oldNodes, {name: nodeName});
             if (existingNode) {
+              existingNode.exhausted = parentItem.exhausted;
               return existingNode;
             }
             else if (oldNodes.length == 1) {
-              return {name: string, x: 300, y: 300};  // hack to fix "second node streaks in from infinity"
+              return {name: nodeName, x: 300, y: 300};  // hack to fix "second node streaks in from infinity"
             }
             else {
-              return {name: string};
+              return {name: nodeName};
             }
           });
 
@@ -130,7 +133,6 @@ angular.module('wikiApp')
             .attr("width", function(d) {
               return Math.max(this.parentElement.getBBox().width + 10, 60);
             })
-            .attr("style", "fill: #fee")
             .attr("height", 50)
             .attr("rx", 20)
             .attr("ry", 20)
