@@ -14,13 +14,8 @@ angular.module('wikiApp')
         scope.awaitingDoubleClick = false;
         scope.clickTimer = null;
 
-        var mapHeight = $(window).height() - 50;
-        var mapWidth = $(window).width() - 20;
-
         var svg = d3.select(iElement[0])
           .append("svg")
-          .attr("width", mapWidth)
-          .attr("height", mapHeight);
 
         var node= svg.selectAll(".node");
         var link= svg.selectAll(".link");
@@ -28,11 +23,23 @@ angular.module('wikiApp')
         var force = d3.layout.force()
           .charge(-1420)
           .linkDistance(200)
-          .size([mapWidth, mapHeight]);
 
         scope.$watch('data', function(newVals, oldVals) {
           return scope.updateMindMap(newVals);
         }, true);
+
+        scope.resize = function() {
+          var mapWidth = $(window).width() - 20;
+          var mapHeight = $(window).height() - 50;
+
+          svg.attr("width", mapWidth);
+          svg.attr("height", mapHeight);
+
+          force.size([mapWidth, mapHeight])
+        };
+
+        scope.resize();
+        d3.select(window).on('resize', _.throttle(scope.resize, 250));
 
         scope.updateMindMap = function(parentData) {
           scope.updateNodes(parentData);
