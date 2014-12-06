@@ -35,7 +35,8 @@ angular.module('wikiApp')
           svg.attr("width", mapWidth);
           svg.attr("height", mapHeight);
 
-          force.size([mapWidth, mapHeight])
+          force.size([mapWidth, mapHeight]);
+          force.start();
         };
 
         scope.resize();
