@@ -7,10 +7,11 @@ angular.module('wikiApp')
       scope: {
         data: "=",
         onClickNode: "&",
-        onLongClickNode: "&"
+        onDoubleClickNode: "&"
       },
       link: function(scope, iElement, iAttrs) {
         scope.didDrag = false;
+        scope.awaitingDoubleClick = false;
         scope.clickTimer = null;
 
         var svg = d3.select(iElement[0])
@@ -114,25 +115,26 @@ angular.module('wikiApp')
               scope.startX=d.x; 
               scope.startY=d.y; 
               scope.didDrag= false;
-              scope.clickTimer = setTimeout(function() {
-                scope.onLongClickNode({clickedNode: d});
-
-                // fake a mouse-up event to kill the drag in progress.
-                var fakeMouseUp = document.createEvent('MouseEvents');
-                fakeMouseUp.initEvent("mouseup", true, true);
-                window.dispatchEvent(fakeMouseUp);
-              }, 1000);              
             })
             .on("mousemove", function(d) {
               if ((Math.abs(d.x - scope.startX) + Math.abs(d.y - scope.startY)) > 10) {
                 scope.didDrag= true;
-                clearTimeout(scope.clickTimer);
               }
             })
             .on("mouseup", function(d, i){
-              clearTimeout(scope.clickTimer);
               if (!scope.didDrag) {
-                scope.onClickNode({clickedNode: d}); 
+                if (scope.awaitingDoubleClick) {
+                  scope.awaitingDoubleClick = false;  
+                  clearTimeout(scope.clickTimer);
+                  scope.onDoubleClickNode({clickedNode: d});                
+                }
+                else {
+                  scope.awaitingDoubleClick = true;
+                  scope.clickTimer =setTimeout(function() {
+                    scope.awaitingDoubleClick = false;
+                    scope.onClickNode({clickedNode: d}); 
+                  }, 250);
+                }
               }
             })
             
