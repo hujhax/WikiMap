@@ -29,7 +29,12 @@ angular.module('wikiApp')
 				this.call("format=json&action=query&titles=", linksText, "&redirects&pllimit=500&prop=links", this.processLinksData, callback);
 			},
 			processLinksData: function(data) {
-				var newData = _.chain(data.query.pages).values().pluck("links").flatten().pluck("title").value();
+				var linkObjects = _(data.query.pages).values().pluck("links").flatten();
+
+				if (linkObjects.value()[0] === undefined)
+					return [];
+
+				var newData = linkObjects.pluck("title").value();
 
 				return _.reduce(newData, function(data, topic) {
 					var splitTopic = topic.split(":");
